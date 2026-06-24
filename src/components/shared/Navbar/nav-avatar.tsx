@@ -13,7 +13,7 @@ export function NavAvatar({
 		return (
 			<img
 				src={user.avatar}
-				alt={user.name}
+				alt={user?.name}
 				className={cn("rounded-full object-cover", dim)}
 			/>
 		);
@@ -24,7 +24,7 @@ export function NavAvatar({
 				"rounded-full bg-brand-navy text-brand-white font-semibold flex items-center justify-center",
 				dim,
 			)}>
-			{user.name.charAt(0).toUpperCase()}
+			{user?.name?.charAt(0).toUpperCase()}
 		</span>
 	);
 }

@@ -1,4 +1,4 @@
-import SavedClient from "@/app/(customer)/saved/page";
+import SavedClient from "@/app/(protected)/(customer)/saved/page";
 import React from "react";
 
 const savedPage = () => {

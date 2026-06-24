@@ -41,6 +41,7 @@ export default function LoginPage() {
 				email: data.email,
 				password: data.password,
 			});
+			console.log("🚀 ~ onSubmit ~ res:", res)
 
 			showToast("success", `Welcome back, ${res.user.name}!`);
 			setTimeout(() => router.push("/dashboard"), 1000);
