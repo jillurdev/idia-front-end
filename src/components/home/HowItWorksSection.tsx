@@ -7,8 +7,8 @@ export default function HowItWorksSection() {
 	return (
 		<section className="py-24 bg-brand-navy relative overflow-hidden">
 			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-brand-gold/5" />
-				<div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-brand-gold/8" />
+				<div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-brand-purple/5" />
+				<div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-brand-cyan/8" />
 			</div>
 
 			<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,12 +23,12 @@ export default function HowItWorksSection() {
 					{STEPS.map((step, i) => (
 						<div key={step.number} className="relative">
 							{i < STEPS.length - 1 && (
-								<div className="hidden md:block absolute top-6 left-[calc(50%+40px)] right-[-calc(50%-40px)] h-[1px] bg-gradient-to-r from-brand-gold/30 to-transparent" />
+								<div className="hidden md:block absolute top-6 left-[calc(50%+40px)] right-[-calc(50%-40px)] h-[1px] bg-gradient-to-r from-brand-purple/30 to-transparent" />
 							)}
 
 							<div className="text-center">
-								<div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold/30 bg-brand-gold/8 mb-5">
-									<span className="font-serif text-brand-gold text-[15px] font-semibold">
+								<div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-purple/30 bg-brand-purple/8 mb-5">
+									<span className="font-serif text-brand-cyan text-[15px] font-semibold">
 										{step.number}
 									</span>
 								</div>
@@ -46,7 +46,7 @@ export default function HowItWorksSection() {
 				<div className="mt-14 text-center">
 					<Link
 						href="/register"
-						className="inline-flex items-center gap-2 px-8 py-4 bg-brand-gold text-brand-navy text-[13px] font-semibold tracking-widest uppercase rounded-[6px] hover:bg-brand-gold/90 transition-colors duration-200 group">
+						className="inline-flex items-center gap-2 px-8 py-4 bg-brand-purple text-brand-white text-[13px] font-semibold tracking-widest uppercase rounded-[6px] hover:bg-brand-purple-dark transition-colors duration-200 group">
 						Get Started Free
 						<ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
 					</Link>

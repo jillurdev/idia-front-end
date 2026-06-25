@@ -36,6 +36,19 @@ export const apiClient = {
 		if (!res.ok) throw new Error(data.message || "Something went wrong");
 		return data;
 	},
+
+	async put<T>(path: string, body: unknown): Promise<T> {
+		const res = await fetch(`${this.baseUrl}${path}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			credentials: "include",
+			body: JSON.stringify(body),
+		});
+		const data = await res.json();
+		if (!res.ok) throw new Error(data.message || "Something went wrong");
+		return data;
+	},
+
 	async patch<T>(path: string, body: unknown): Promise<T> {
 		const res = await fetch(`${this.baseUrl}${path}`, {
 			method: "PATCH",
@@ -52,6 +65,17 @@ export const apiClient = {
 		const res = await fetch(`${this.baseUrl}${path}`, {
 			method: "DELETE",
 			credentials: "include",
+		});
+		const data = await res.json();
+		if (!res.ok) throw new Error(data.message || "Something went wrong");
+		return data;
+	},
+
+	async upload<T>(path: string, formData: FormData): Promise<T> {
+		const res = await fetch(`${this.baseUrl}${path}`, {
+			method: "POST",
+			credentials: "include",
+			body: formData, // Content-Type set kora hobe na, browser automatically multipart boundary set kore
 		});
 		const data = await res.json();
 		if (!res.ok) throw new Error(data.message || "Something went wrong");

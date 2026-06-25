@@ -6,7 +6,7 @@ import { FEATURED_PRODUCTS } from "../data/home";
 
 export default function FeaturedSection() {
 	return (
-		<section className="py-24 bg-[#f9f6f0]">
+		<section className="py-24 bg-surface-subtle">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<SectionHeader
 					eyebrow="Handpicked"
@@ -23,7 +23,7 @@ export default function FeaturedSection() {
 				<div className="mt-12 text-center">
 					<Link
 						href="/products"
-						className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-brand-navy text-brand-white text-[13px] font-medium tracking-widest uppercase rounded-[6px] hover:bg-[#252550] transition-colors duration-200 group">
+						className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-brand-navy text-brand-white text-[13px] font-medium tracking-widest uppercase rounded-[6px] hover:bg-brand-purple-dark transition-colors duration-200 group">
 						Browse All Products
 						<ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
 					</Link>

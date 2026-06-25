@@ -10,8 +10,8 @@ export default function ProductCard({ product }: Props) {
 	return (
 		<Link
 			href={`/products/${product.slug}`}
-			className="group bg-brand-white rounded-xl overflow-hidden border border-brand-parchment hover:border-brand-gold/30 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-300">
-			<div className="relative aspect-[4/3] overflow-hidden bg-brand-parchment/40">
+			className="group bg-brand-white rounded-xl overflow-hidden border border-border hover:border-brand-purple/30 hover:shadow-[0_8px_32px_rgba(168,85,247,0.10)] transition-all duration-300">
+			<div className="relative aspect-[4/3] overflow-hidden bg-surface-muted">
 				<img
 					src={product.thumbnailUrl}
 					alt={product.title}
@@ -32,23 +32,23 @@ export default function ProductCard({ product }: Props) {
 			</div>
 
 			<div className="p-4">
-				<h3 className="text-[14px] font-semibold text-brand-navy group-hover:text-brand-gold-dark transition-colors leading-snug">
+				<h3 className="text-[14px] font-semibold text-brand-navy group-hover:text-brand-purple-dark transition-colors leading-snug">
 					{product.title}
 				</h3>
 
 				<div className="mt-2 flex items-center justify-between">
 					<div className="flex items-center gap-1">
-						<Star className="w-3 h-3 fill-brand-gold text-brand-gold" />
-						<span className="text-[11px] text-brand-black/50 font-medium">
+						<Star className="w-3 h-3 fill-brand-cyan text-brand-cyan" />
+						<span className="text-[11px] text-text-secondary/60 font-medium">
 							{product.rating}
 						</span>
-						<span className="text-[11px] text-brand-black/30">
+						<span className="text-[11px] text-text-secondary/40">
 							({product.reviewCount})
 						</span>
 					</div>
 
 					<div className="flex items-center gap-1">
-						<span className="text-[11px] text-brand-black/30 font-light">
+						<span className="text-[11px] text-text-secondary/40 font-light">
 							from
 						</span>
 						<span className="font-serif text-[16px] font-semibold text-brand-navy">
