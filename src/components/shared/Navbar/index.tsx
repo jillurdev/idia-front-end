@@ -72,11 +72,6 @@ export default function Navbar() {
 		}
 	};
 
-	const handleLogout = async () => {
-		await logout();
-		router.push("/");
-	};
-
 	const isActive = (href: string) =>
 		href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -100,8 +95,8 @@ export default function Navbar() {
 				)}>
 				<nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-6">
 					<Link href="/" className="flex-shrink-0 group">
-						<span className="font-serif text-[22px] font-semibold text-brand-navy tracking-tight group-hover:text-brand-gold-dark transition-colors duration-200">
-							Idia<span className="text-brand-gold">Designs</span>
+						<span className="font-serif text-[22px] font-semibold text-brand-navy tracking-tight group-hover:text-brand-purple-dark transition-colors duration-200">
+							Idia<span className="text-brand-purple">Designs</span>
 						</span>
 					</Link>
 
@@ -118,7 +113,7 @@ export default function Navbar() {
 									)}>
 									{label}
 									{isActive(href) && (
-										<span className="absolute bottom-0 left-4 right-4 h-[1.5px] bg-brand-gold rounded-full" />
+										<span className="absolute bottom-0 left-4 right-4 h-[1.5px] bg-brand-purple rounded-full" />
 									)}
 								</Link>
 							</li>
@@ -151,7 +146,7 @@ export default function Navbar() {
 								<div ref={dropdownRef} className="relative ml-1">
 									<button
 										onClick={() => setDropdownOpen(v => !v)}
-										className="flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full border border-brand-parchment hover:border-brand-gold/40 transition-colors duration-200"
+										className="flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full border border-surface-subtle hover:border-brand-purple/40 transition-colors duration-200"
 										aria-label="User menu">
 										<NavAvatar user={navUser} size="sm" />
 										<ChevronDown
@@ -163,9 +158,9 @@ export default function Navbar() {
 									</button>
 									{dropdownOpen && (
 										<ProfileDropdown
-											user={{ ...navUser, role: navUser.role ?? "USER" }}  
+											user={{ ...navUser, role: navUser.role ?? "USER" }}
 											onClose={() => setDropdownOpen(false)}
-											onLogout={handleLogout}
+											onLogout={logout}
 										/>
 									)}
 								</div>
@@ -189,7 +184,7 @@ export default function Navbar() {
 
 					<button
 						onClick={() => setMobileOpen(v => !v)}
-						className="lg:hidden p-2 rounded-[6px] text-brand-black/60 hover:text-brand-navy hover:bg-brand-parchment/50 transition-colors"
+						className="lg:hidden p-2 rounded-[6px] text-brand-black/60 hover:text-brand-navy hover:bg-surface-subtle/50 transition-colors"
 						aria-label="Toggle menu">
 						{mobileOpen ? (
 							<X className="w-5 h-5" />
@@ -205,7 +200,7 @@ export default function Navbar() {
 				user={navUser}
 				pathname={pathname}
 				onProtected={handleProtected}
-				onLogout={handleLogout}
+				onLogout={logout}
 				onClose={() => setMobileOpen(false)}
 			/>
 

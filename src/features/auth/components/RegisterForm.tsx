@@ -47,17 +47,17 @@ export default function RegisterPage() {
 					<div className="lg:hidden mb-10">
 						<Link
 							href="/"
-							className="inline-flex items-center gap-1.5 text-[11px] text-brand-black/40 hover:text-brand-gold-dark transition-colors tracking-wide mb-6 group">
+							className="inline-flex items-center gap-1.5 text-[11px] text-brand-black/40 hover:text-brand-purple-dark transition-colors tracking-wide mb-6 group">
 							<ArrowLeft className="w-3 h-3 transition-transform duration-200 group-hover:-translate-x-0.5" />
 							Back to home
 						</Link>
 						<div className="text-center">
 							<Link href="/">
-								<h1 className="font-serif text-4xl font-semibold text-brand-navy hover:text-brand-gold-dark transition-colors">
+								<h1 className="font-serif text-4xl font-semibold text-brand-navy hover:text-brand-purple-dark transition-colors">
 									IdiaDesigns
 								</h1>
 							</Link>
-							<p className="font-serif italic text-brand-gold text-sm mt-1">
+							<p className="font-serif italic text-brand-purple text-sm mt-1">
 								Where elegance meets excellence
 							</p>
 						</div>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
 									<button
 										type="button"
 										onClick={() => setShowPassword(v => !v)}
-										className="text-brand-black/30 hover:text-brand-gold-dark transition-colors p-1"
+										className="text-brand-black/30 hover:text-brand-purple-dark transition-colors p-1"
 										aria-label={
 											showPassword ? "Hide password" : "Show password"
 										}>
@@ -140,7 +140,7 @@ export default function RegisterPage() {
 												className={`flex-1 rounded-full transition-all duration-300 ${
 													i <= strength.score
 														? strength.color
-														: "bg-brand-parchment"
+														: "bg-surface-subtle"
 												}`}
 											/>
 										))}
@@ -163,7 +163,7 @@ export default function RegisterPage() {
 								<button
 									type="button"
 									onClick={() => setShowConfirm(v => !v)}
-									className="text-brand-black/30 hover:text-brand-gold-dark transition-colors p-1"
+									className="text-brand-black/30 hover:text-brand-purple-dark transition-colors p-1"
 									aria-label={showConfirm ? "Hide password" : "Show password"}>
 									{showConfirm ? (
 										<EyeOff className="w-4 h-4" />
@@ -179,13 +179,13 @@ export default function RegisterPage() {
 							By creating an account you agree to our{" "}
 							<Link
 								href="/terms"
-								className="text-brand-gold-dark hover:text-brand-gold underline-offset-2 hover:underline">
+								className="text-brand-purple-dark hover:text-brand-purple underline-offset-2 hover:underline">
 								Terms of Service
 							</Link>{" "}
 							and{" "}
 							<Link
 								href="/privacy"
-								className="text-brand-gold-dark hover:text-brand-gold underline-offset-2 hover:underline">
+								className="text-brand-purple-dark hover:text-brand-purple underline-offset-2 hover:underline">
 								Privacy Policy
 							</Link>
 							.
@@ -194,7 +194,7 @@ export default function RegisterPage() {
 						<button
 							type="submit"
 							disabled={isPending}
-							className="relative w-full py-3.5 mt-1 bg-brand-navy text-brand-white text-sm font-medium tracking-widest uppercase rounded-[6px] transition-all duration-200 hover:bg-[#252550] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
+							className="relative w-full py-3.5 mt-1 bg-brand-navy text-brand-white text-sm font-medium tracking-widest uppercase rounded-[6px] transition-all duration-200 hover:bg-[#252550] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2">
 							{isPending ? (
 								<span className="flex items-center justify-center gap-2">
 									<span className="w-4 h-4 border-2 border-brand-white/30 border-t-brand-white rounded-full animate-spin" />
@@ -209,7 +209,7 @@ export default function RegisterPage() {
 						</button>
 					</form>
 
-					<div className="ornament-divider my-7 text-brand-gold/40 text-[9px]">
+					<div className="ornament-divider my-7 text-brand-purple/40 text-[9px]">
 						✦
 					</div>
 
@@ -217,7 +217,7 @@ export default function RegisterPage() {
 						Already have an account?{" "}
 						<Link
 							href="/login"
-							className="text-brand-gold-dark font-medium hover:text-brand-gold transition-colors">
+							className="text-brand-purple-dark font-medium hover:text-brand-purple transition-colors">
 							Sign in
 						</Link>
 					</p>
@@ -248,8 +248,8 @@ function getPasswordStrength(password: string) {
 		{
 			score: 3,
 			label: "Good",
-			color: "bg-brand-gold",
-			textColor: "text-brand-gold-dark",
+			color: "bg-brand-purple",
+			textColor: "text-brand-purple-dark",
 		},
 		{
 			score: 4,

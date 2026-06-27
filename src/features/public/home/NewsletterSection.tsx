@@ -1,8 +1,8 @@
 export default function NewsletterSection() {
 	return (
-		<section className="py-20 bg-[#f9f6f0] border-t border-brand-parchment">
+		<section className="py-20 bg-[#f9f6f0] border-t border-surface-subtle">
 			<div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-				<p className="text-[10px] tracking-[0.3em] uppercase text-brand-gold-dark font-medium mb-4">
+				<p className="text-[10px] tracking-[0.3em] uppercase text-brand-purple-dark font-medium mb-4">
 					Stay in the loop
 				</p>
 
@@ -22,7 +22,7 @@ export default function NewsletterSection() {
 						type="email"
 						required
 						placeholder="your@email.com"
-						className="flex-1 px-4 py-3 text-sm font-sans bg-brand-white border border-brand-parchment rounded-[6px] text-brand-black placeholder:text-brand-black/30 outline-none focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/10 transition-all duration-200"
+						className="flex-1 px-4 py-3 text-sm font-sans bg-brand-white border border-surface-subtle rounded-[6px] text-brand-black placeholder:text-brand-black/30 outline-none focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/10 transition-all duration-200"
 					/>
 					<button
 						type="submit"

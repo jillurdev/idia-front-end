@@ -40,7 +40,7 @@ export default function ProductsHeader({ total }: { total: number }) {
 						value={search}
 						onChange={e => setSearch(e.target.value)}
 						placeholder="Search products..."
-						className="w-full h-12 pl-11 pr-4 rounded-xl border border-brand-parchment bg-white outline-none focus:ring-2 focus:ring-brand-gold/30 text-sm"
+						className="w-full h-12 pl-11 pr-4 rounded-xl border border-surface-subtle bg-white outline-none focus:ring-2 focus:ring-brand-purple/30 text-sm"
 					/>
 				</form>
 

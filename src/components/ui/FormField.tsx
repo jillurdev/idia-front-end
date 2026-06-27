@@ -13,7 +13,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
 	({ label, error, rightElement, className, ...props }, ref) => {
 		return (
 			<div className="space-y-1.5">
-				<label className="block text-[10px] font-medium tracking-[0.12em] uppercase text-brand-gold-dark">
+				<label className="block text-[10px] font-medium tracking-[0.12em] uppercase text-brand-purple-dark">
 					{label}
 				</label>
 				<div className="relative">
@@ -21,10 +21,10 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
 						ref={ref}
 						className={cn(
 							"w-full px-4 py-3 text-sm font-sans",
-							"bg-brand-white border border-brand-parchment rounded-[6px]",
+							"bg-brand-white border border-surface-subtle rounded-[6px]",
 							"text-brand-black placeholder:text-brand-black/30",
 							"outline-none transition-all duration-200",
-							"focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/10",
+							"focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/10",
 							error && "border-red-400 focus:border-red-400 focus:ring-red-100",
 							rightElement && "pr-16",
 							className,

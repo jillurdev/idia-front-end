@@ -1,51 +1,40 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import OwnerSidebar from "@/features/owner/components/OwnerSidebar";
 import OwnerHeader from "@/features/owner/components/OwnerHeader";
+import { redirect } from "next/navigation";
 
 export default function OwnerLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const router = useRouter();
-	const { user, isLoading, isAuthenticated } = useAuth();
-
-	useEffect(() => {
-		if (isLoading) return;
-
-		if (!isAuthenticated) {
-			router.replace("/login");
-			return;
-		}
-
-		if (user?.role !== "OWNER") {
-			router.replace("/");
-		}
-	}, [isLoading, isAuthenticated, user, router]);
+	const [mobileOpen, setMobileOpen] = useState(false);
+	const { user, isLoading } = useAuth();
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center bg-brand-navy">
-				<div className="w-8 h-8 border-2 border-brand-purple/30 border-t-brand-purple rounded-full animate-spin" />
+			<div className="min-h-screen bg-surface-subtle flex items-center justify-center">
+				<div className="w-6 h-6 border-2 border-brand-purple/30 border-t-brand-purple rounded-full animate-spin" />
 			</div>
 		);
 	}
 
-	if (!isAuthenticated || user?.role !== "OWNER") {
-		return null;
+	if (!user || user.role !== "OWNER") {
+		redirect("/login");
 	}
 
 	return (
-		<div className="min-h-screen flex bg-surface-subtle">
-			<OwnerSidebar />
-
+		<div className="flex min-h-screen bg-surface-subtle">
+			<OwnerSidebar
+				mobileOpen={mobileOpen}
+				onClose={() => setMobileOpen(false)}
+			/>
 			<div className="flex-1 flex flex-col min-w-0">
-				<OwnerHeader user={user} />
-				<main className="flex-1 p-6 lg:p-8 overflow-x-hidden">{children}</main>
+				<OwnerHeader user={user} onMenuClick={() => setMobileOpen(v => !v)} />
+				<main className="flex-1 p-6 lg:p-8">{children}</main>
 			</div>
 		</div>
 	);

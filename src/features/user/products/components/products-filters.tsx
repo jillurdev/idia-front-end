@@ -24,7 +24,7 @@ export default function ProductsFilters({
 	};
 
 	return (
-		<aside className="bg-white rounded-2xl border border-brand-parchment p-5 h-fit sticky top-24">
+		<aside className="bg-white rounded-2xl border border-surface-subtle p-5 h-fit sticky top-24">
 			<div className="space-y-6">
 				<div>
 					<h3 className="text-sm font-semibold text-brand-navy mb-3">
@@ -33,7 +33,7 @@ export default function ProductsFilters({
 					<select
 						defaultValue={searchParams.get("sort") || "latest"}
 						onChange={e => updateFilter("sort", e.target.value)}
-						className="w-full h-11 rounded-xl border border-brand-parchment px-3 text-sm outline-none focus:ring-2 focus:ring-brand-gold/30">
+						className="w-full h-11 rounded-xl border border-surface-subtle px-3 text-sm outline-none focus:ring-2 focus:ring-brand-purple/30">
 						<option value="latest">Latest</option>
 						<option value="featured">Featured</option>
 						<option value="popular">Most Popular</option>
@@ -49,7 +49,7 @@ export default function ProductsFilters({
 					<select
 						defaultValue={searchParams.get("category") || ""}
 						onChange={e => updateFilter("category", e.target.value)}
-						className="w-full h-11 rounded-xl border border-brand-parchment px-3 text-sm outline-none focus:ring-2 focus:ring-brand-gold/30">
+						className="w-full h-11 rounded-xl border border-surface-subtle px-3 text-sm outline-none focus:ring-2 focus:ring-brand-purple/30">
 						<option value="">All Categories</option>
 						{categories.map(cat => (
 							<option key={cat.id} value={cat.slug}>
@@ -70,8 +70,8 @@ export default function ProductsFilters({
 									onClick={() => updateFilter("tag", active ? "" : tag.slug)}
 									className={`px-3 py-1.5 rounded-full text-xs border transition ${
 										active
-											? "bg-brand-gold text-brand-black border-brand-gold"
-											: "bg-brand-white text-brand-black/70 border-brand-parchment hover:bg-brand-parchment/40"
+											? "bg-brand-purple text-brand-black border-brand-purple"
+											: "bg-brand-white text-brand-black/70 border-surface-subtle hover:bg-surface-subtle/40"
 									}`}>
 									{tag.name}
 								</button>

@@ -43,11 +43,11 @@ export default function Footer() {
 	return (
 		<footer className="bg-brand-navy text-brand-white relative overflow-hidden">
 			{/* Decorative top border */}
-			<div className="h-[1px] bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
+			<div className="h-[1px] bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
 
 			{/* Background concentric ornament */}
-			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] rounded-full border border-brand-gold/5 pointer-events-none" />
-			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[340px] h-[340px] rounded-full border border-brand-gold/5 pointer-events-none" />
+			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] rounded-full border border-brand-purple/5 pointer-events-none" />
+			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[340px] h-[340px] rounded-full border border-brand-purple/5 pointer-events-none" />
 
 			{/* ── Main grid ── */}
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
@@ -56,13 +56,13 @@ export default function Footer() {
 					<div className="space-y-6">
 						<div>
 							<Link href="/" className="inline-block group">
-								<h2 className="font-serif text-[28px] font-semibold text-brand-white tracking-tight leading-none group-hover:text-brand-gold transition-colors duration-200">
-									Idia<span className="text-brand-gold">Designs</span>
+								<h2 className="font-serif text-[28px] font-semibold text-brand-white tracking-tight leading-none group-hover:text-brand-purple transition-colors duration-200">
+									Idia<span className="text-brand-purple">Designs</span>
 								</h2>
 							</Link>
 							<div className="mt-1 flex items-center gap-2">
-								<div className="h-[1px] w-8 bg-brand-gold/40" />
-								<p className="font-serif italic text-brand-gold/80 text-[12px] tracking-wide">
+								<div className="h-[1px] w-8 bg-brand-purple/40" />
+								<p className="font-serif italic text-brand-purple/80 text-[12px] tracking-wide">
 									Where elegance meets excellence
 								</p>
 							</div>
@@ -86,7 +86,7 @@ export default function Footer() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={label}
-										className="w-9 h-9 rounded-full border border-brand-white/10 flex items-center justify-center text-brand-white/40 hover:border-brand-gold/50 hover:text-brand-gold transition-all duration-200">
+										className="w-9 h-9 rounded-full border border-brand-white/10 flex items-center justify-center text-brand-white/40 hover:border-brand-purple/50 hover:text-brand-purple transition-all duration-200">
 										<Icon className="w-4 h-4" />
 									</a>
 								))}
@@ -105,7 +105,7 @@ export default function Footer() {
 					{/* ── Link columns ── */}
 					{Object.entries(FOOTER_LINKS).map(([title, links]) => (
 						<div key={title}>
-							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-gold/70 font-medium mb-5">
+							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-purple/70 font-medium mb-5">
 								{title}
 							</p>
 							<ul className="space-y-3">
@@ -131,10 +131,10 @@ export default function Footer() {
 					</p>
 
 					{/* Ornamental center mark */}
-					<div className="hidden sm:flex items-center gap-3 text-brand-gold/30 text-[9px]">
-						<div className="h-[1px] w-12 bg-brand-gold/15" />
+					<div className="hidden sm:flex items-center gap-3 text-brand-purple/30 text-[9px]">
+						<div className="h-[1px] w-12 bg-brand-purple/15" />
 						✦
-						<div className="h-[1px] w-12 bg-brand-gold/15" />
+						<div className="h-[1px] w-12 bg-brand-purple/15" />
 					</div>
 
 					<div className="flex items-center gap-4">
@@ -184,7 +184,7 @@ function NewsletterInput() {
           bg-brand-white/5 border border-brand-white/10
           text-brand-white placeholder:text-brand-white/20
           rounded-l-[6px] outline-none
-          focus:border-brand-gold/40 focus:bg-brand-white/8
+          focus:border-brand-purple/40 focus:bg-brand-white/8
           transition-all duration-200
         "
 			/>
@@ -192,8 +192,8 @@ function NewsletterInput() {
 				type="submit"
 				aria-label="Subscribe"
 				className="
-          px-3.5 py-2.5 bg-brand-gold text-brand-navy
-          rounded-r-[6px] hover:bg-brand-gold/90
+          px-3.5 py-2.5 bg-brand-purple text-brand-navy
+          rounded-r-[6px] hover:bg-brand-purple/90
           transition-colors duration-200 flex-shrink-0
         ">
 				<Send className="w-3.5 h-3.5" />

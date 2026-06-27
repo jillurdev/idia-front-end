@@ -28,8 +28,8 @@ export function NotifDropdown({ onClose }: { onClose: () => void }) {
 	];
 
 	return (
-		<div className="absolute right-0 top-full mt-2 w-80 bg-brand-white border border-brand-parchment rounded-[10px] shadow-[0_8px_30px_rgba(0,0,0,0.10)] overflow-hidden animate-fade-in z-50">
-			<div className="px-4 py-3 border-b border-brand-parchment flex items-center justify-between">
+		<div className="absolute right-0 top-full mt-2 w-80 bg-brand-white border border-surface-subtle rounded-[10px] shadow-[0_8px_30px_rgba(0,0,0,0.10)] overflow-hidden animate-fade-in z-50">
+			<div className="px-4 py-3 border-b border-surface-subtle flex items-center justify-between">
 				<p className="text-[13px] font-semibold text-brand-navy">
 					Notifications
 				</p>
@@ -40,17 +40,17 @@ export function NotifDropdown({ onClose }: { onClose: () => void }) {
 				</button>
 			</div>
 
-			<div className="max-h-72 overflow-y-auto divide-y divide-brand-parchment/60">
+			<div className="max-h-72 overflow-y-auto divide-y divide-surface-subtle/60">
 				{notifs.map(n => (
 					<div
 						key={n.id}
 						className={cn(
-							"px-4 py-3 hover:bg-brand-parchment/30 transition-colors cursor-pointer",
-							!n.read && "bg-brand-gold/5",
+							"px-4 py-3 hover:bg-surface-subtle/30 transition-colors cursor-pointer",
+							!n.read && "bg-brand-purple/5",
 						)}>
 						<div className="flex items-start gap-2.5">
 							{!n.read && (
-								<span className="w-1.5 h-1.5 rounded-full bg-brand-gold flex-shrink-0 mt-1.5" />
+								<span className="w-1.5 h-1.5 rounded-full bg-brand-purple flex-shrink-0 mt-1.5" />
 							)}
 							<div className={cn(!n.read ? "" : "pl-4")}>
 								<p className="text-[12px] font-semibold text-brand-navy">
@@ -66,11 +66,11 @@ export function NotifDropdown({ onClose }: { onClose: () => void }) {
 				))}
 			</div>
 
-			<div className="px-4 py-2.5 border-t border-brand-parchment text-center">
+			<div className="px-4 py-2.5 border-t border-surface-subtle text-center">
 				<Link
 					href="/notifications"
 					onClick={onClose}
-					className="text-[11px] text-brand-gold-dark hover:text-brand-gold font-medium transition-colors">
+					className="text-[11px] text-brand-purple-dark hover:text-brand-purple font-medium transition-colors">
 					View all notifications →
 				</Link>
 			</div>

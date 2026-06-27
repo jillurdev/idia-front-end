@@ -38,7 +38,7 @@ export default function ProductsGrid({
 					<button
 						disabled={page <= 1}
 						onClick={() => goToPage(page - 1)}
-						className="px-4 h-11 rounded-xl border border-brand-parchment disabled:opacity-40">
+						className="px-4 h-11 rounded-xl border border-surface-subtle disabled:opacity-40">
 						Prev
 					</button>
 
@@ -49,7 +49,7 @@ export default function ProductsGrid({
 					<button
 						disabled={page >= totalPages}
 						onClick={() => goToPage(page + 1)}
-						className="px-4 h-11 rounded-xl border border-brand-parchment disabled:opacity-40">
+						className="px-4 h-11 rounded-xl border border-surface-subtle disabled:opacity-40">
 						Next
 					</button>
 				</div>

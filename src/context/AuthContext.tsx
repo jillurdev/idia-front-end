@@ -2,6 +2,8 @@
 
 import { createContext, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { UserResponse } from "@/types/user";
 import { authApi } from "@/features/auth/api";
 
@@ -17,22 +19,29 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	const { data: user, isLoading } = useQuery({
 		queryKey: ["auth-user"],
 		queryFn: () => authApi.me(),
-		retry: false,  
-		staleTime: 5 * 60 * 1000, 
+		retry: false,
+		staleTime: 5 * 60 * 1000,
 	});
-	console.log("🚀 ~ AuthProvider ~ user:", user)
 
 	const refetch = async () => {
 		await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
 	};
 
 	const logout = async () => {
-		await authApi.logout();
-		queryClient.setQueryData(["auth-user"], null);
+		try {
+			await authApi.logout();
+		} catch {
+			// cookie clear হয়ে গেলেও continue করো
+		} finally {
+			queryClient.setQueryData(["auth-user"], null);
+			queryClient.clear();  
+			router.push("/");
+		}
 	};
 
 	return (

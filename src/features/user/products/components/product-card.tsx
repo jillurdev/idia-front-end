@@ -16,8 +16,8 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
 	return (
 		<Link
 			href={`/products/${product.slug}`}
-			className="group bg-white border border-brand-parchment rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
-			<div className="relative aspect-[4/3] overflow-hidden bg-brand-parchment/30">
+			className="group bg-white border border-surface-subtle rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
+			<div className="relative aspect-[4/3] overflow-hidden bg-surface-subtle/30">
 				<img
 					src={product.thumbnailUrl}
 					alt={product.title}
@@ -26,7 +26,7 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
 
 				<div className="absolute top-3 left-3 flex gap-2">
 					{product.isFeatured && (
-						<span className="px-2.5 py-1 rounded-full bg-brand-gold text-brand-black text-[11px] font-semibold">
+						<span className="px-2.5 py-1 rounded-full bg-brand-purple text-brand-black text-[11px] font-semibold">
 							Featured
 						</span>
 					)}
@@ -50,7 +50,7 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
 					{product.tags.slice(0, 3).map(item => (
 						<span
 							key={item.tag.id}
-							className="px-2.5 py-1 rounded-full bg-brand-white text-brand-gold-dark text-[11px] border border-brand-parchment">
+							className="px-2.5 py-1 rounded-full bg-brand-white text-brand-purple-dark text-[11px] border border-surface-subtle">
 							#{item.tag.name}
 						</span>
 					))}
@@ -59,7 +59,7 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
 				<div className="flex items-center justify-between text-sm">
 					<div className="flex items-center gap-4 text-brand-black/60">
 						<div className="flex items-center gap-1">
-							<Star className="w-4 h-4 fill-current text-brand-gold" />
+							<Star className="w-4 h-4 fill-current text-brand-purple" />
 							<span>{avgRating ? avgRating.toFixed(1) : "New"}</span>
 						</div>
 						<div className="flex items-center gap-1">
@@ -80,7 +80,7 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
 						</p>
 					</div>
 
-					<div className="inline-flex items-center gap-2 px-4 h-10 rounded-xl bg-brand-navy text-white text-sm font-medium group-hover:bg-brand-gold-dark transition">
+					<div className="inline-flex items-center gap-2 px-4 h-10 rounded-xl bg-brand-navy text-white text-sm font-medium group-hover:bg-brand-purple-dark transition">
 						<ShoppingCart className="w-4 h-4" />
 						View
 					</div>

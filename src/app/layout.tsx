@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/context/Providers";
-import Navbar from "@/components/shared/Navbar";
-import Footer from "@/components/shared/Footer";
- 
 
 const inter = Inter({
 	variable: "--font-sans",
@@ -30,19 +27,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
 	children,
-}: Readonly<{
+}: {
 	children: React.ReactNode;
-}>) {
+}) {
 	return (
 		<html
 			lang="en"
 			className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
 			<body>
 				<Providers>
-					<main>{children}</main>
+					{children}  
 				</Providers>
 			</body>
 		</html>
 	);
 }
-	

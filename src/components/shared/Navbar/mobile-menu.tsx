@@ -38,6 +38,11 @@ export function MobileMenu({
 }) {
 	const accountLinks = [
 		{
+			icon: <Grip className="w-3.5 h-3.5" />,
+			label: "Dashboard",
+			href: "/dashboard",
+		},
+		{
 			icon: <ShoppingBag className="w-4 h-4" />,
 			label: "Purchases",
 			href: "/purchases",
@@ -82,13 +87,13 @@ export function MobileMenu({
 					"fixed top-0 right-0 bottom-0 z-50 w-[300px] bg-brand-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out lg:hidden",
 					open ? "translate-x-0" : "translate-x-full",
 				)}>
-				<div className="flex items-center justify-between px-5 py-4 border-b border-brand-parchment">
+				<div className="flex items-center justify-between px-5 py-4 border-b border-surface-subtle">
 					<span className="font-serif text-[18px] font-semibold text-brand-navy">
-						Idia<span className="text-brand-gold">Designs</span>
+						Idia<span className="text-brand-purple">Designs</span>
 					</span>
 					<button
 						onClick={onClose}
-						className="p-1.5 rounded-full hover:bg-brand-parchment/60 text-brand-black/40 transition-colors">
+						className="p-1.5 rounded-full hover:bg-surface-subtle/60 text-brand-black/40 transition-colors">
 						<X className="w-4 h-4" />
 					</button>
 				</div>
@@ -105,7 +110,7 @@ export function MobileMenu({
 								"flex items-center px-3 py-3 rounded-[6px] text-[14px] font-medium transition-colors mb-0.5",
 								pathname === href || (href !== "/" && pathname.startsWith(href))
 									? "bg-brand-navy text-brand-white"
-									: "text-brand-black/70 hover:bg-brand-parchment/60 hover:text-brand-navy",
+									: "text-brand-black/70 hover:bg-surface-subtle/60 hover:text-brand-navy",
 							)}>
 							{label}
 						</Link>
@@ -113,7 +118,7 @@ export function MobileMenu({
 
 					{user && (
 						<>
-							<div className="my-4 border-t border-brand-parchment" />
+							<div className="my-4 border-t border-surface-subtle" />
 							<p className="px-3 text-[10px] tracking-[0.15em] uppercase text-brand-black/30 font-medium mb-2">
 								My Account
 							</p>
@@ -124,8 +129,8 @@ export function MobileMenu({
 										onProtected(href);
 										onClose();
 									}}
-									className="w-full flex items-center gap-3 px-3 py-3 rounded-[6px] text-[14px] text-brand-black/70 hover:bg-brand-parchment/60 hover:text-brand-navy transition-colors mb-0.5 text-left">
-									<span className="text-brand-gold-dark">{icon}</span>
+									className="w-full flex items-center gap-3 px-3 py-3 rounded-[6px] text-[14px] text-brand-black/70 hover:bg-surface-subtle/60 hover:text-brand-navy transition-colors mb-0.5 text-left">
+									<span className="text-brand-purple-dark">{icon}</span>
 									{label}
 								</button>
 							))}
@@ -133,7 +138,7 @@ export function MobileMenu({
 					)}
 				</div>
 
-				<div className="px-5 py-4 border-t border-brand-parchment">
+				<div className="px-5 py-4 border-t border-surface-subtle">
 					{user ? (
 						<div className="space-y-3">
 							<div className="flex items-center gap-3">
@@ -161,7 +166,7 @@ export function MobileMenu({
 						<div className="space-y-2.5">
 							<Link
 								href="/login"
-								className="block w-full text-center py-2.5 border border-brand-parchment text-brand-navy text-[13px] font-medium rounded-[6px] hover:bg-brand-parchment/40 transition-colors">
+								className="block w-full text-center py-2.5 border border-surface-subtle text-brand-navy text-[13px] font-medium rounded-[6px] hover:bg-surface-subtle/40 transition-colors">
 								Sign In
 							</Link>
 							<Link
