@@ -1,4 +1,4 @@
-import { apiClient } from "@/services/apiClient";
+import { apiClient } from "@/services/http";
 import { ProductsResponse } from "@/types/product";
 
 export interface GetProductsParams {

@@ -2,24 +2,19 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, UserPlus, ArrowLeft } from "lucide-react";
- 
-import { BrandPanel } from "../../../components/ui/BrandPanel";
-import { FormField } from "../../../components/ui/FormField";
-import { RegisterFormValues, registerSchema } from "../schema";
-import { usersApi } from "@/lib/api/users.api";
 
-type ToastState = { type: "success" | "error"; message: string } | null;
+import { BrandPanel } from "@/components/ui/BrandPanel";
+import { FormField } from "@/components/ui/FormField";
+import { RegisterFormValues, registerSchema } from "../schema";
+import { useRegister } from "../hooks/useRegister";
 
 export default function RegisterPage() {
-	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [toast, setToast] = useState<ToastState>(null);
+	const { mutate: register_, isPending } = useRegister();
 
 	const {
 		register,
@@ -33,46 +28,22 @@ export default function RegisterPage() {
 	const passwordValue = watch("password", "");
 	const strength = getPasswordStrength(passwordValue);
 
-	const showToast = (type: "success" | "error", message: string) => {
-		setToast({ type, message });
-		setTimeout(() => setToast(null), 5000);
-	};
-
-	const onSubmit = async (data: RegisterFormValues) => {
-		setIsLoading(true);
-		try {
-			const res = await usersApi.register({
-				name: data.fullName,
-				email: data.email,
-				phone: data.phone,
-				password: data.password,
-			});
-			console.log("🚀 ~ onSubmit ~ res:", res);
-
-			showToast(
-				"success",
-				"Account created! Please check your email to verify.",
-			);
-			setTimeout(() => router.push("/login"), 2000);
-		} catch (err: unknown) {
-			const message =
-				(err as any)?.response?.data?.message ||
-				(err instanceof Error ? err.message : "Something went wrong");
-
-			showToast("error", message);
-		} finally {
-			setIsLoading(false);
-		}
+	const onSubmit = (data: RegisterFormValues) => {
+		register_({
+			name: data.fullName,
+			email: data.email,
+			phone: data.phone,
+			password: data.password,
+		});
 	};
 
 	return (
 		<main className="flex min-h-screen">
 			<BrandPanel />
 
-			{/* ── Form panel ── */}
 			<div className="flex-1 bg-brand-white flex items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
 				<div className="w-full max-w-[440px] animate-fade-up">
-					{/* Mobile header — logo + back to home */}
+					{/* Mobile header */}
 					<div className="lg:hidden mb-10">
 						<Link
 							href="/"
@@ -107,7 +78,6 @@ export default function RegisterPage() {
 						onSubmit={handleSubmit(onSubmit)}
 						className="space-y-5"
 						noValidate>
-						{/* Full name */}
 						<FormField
 							label="Full name"
 							type="text"
@@ -117,7 +87,6 @@ export default function RegisterPage() {
 							{...register("fullName")}
 						/>
 
-						{/* Phone + Email */}
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							<FormField
 								label="Phone number"
@@ -137,7 +106,7 @@ export default function RegisterPage() {
 							/>
 						</div>
 
-						{/* Password */}
+						{/* Password + strength */}
 						<div className="space-y-2">
 							<FormField
 								label="Password"
@@ -162,7 +131,6 @@ export default function RegisterPage() {
 								}
 								{...register("password")}
 							/>
-							{/* Strength bar */}
 							{passwordValue && (
 								<div className="space-y-1 animate-fade-in">
 									<div className="flex gap-1 h-[3px]">
@@ -185,7 +153,6 @@ export default function RegisterPage() {
 							)}
 						</div>
 
-						{/* Confirm password */}
 						<FormField
 							label="Confirm password"
 							type={showConfirm ? "text" : "password"}
@@ -208,7 +175,6 @@ export default function RegisterPage() {
 							{...register("confirmPassword")}
 						/>
 
-						{/* Terms */}
 						<p className="text-[11px] text-brand-black/40 leading-relaxed">
 							By creating an account you agree to our{" "}
 							<Link
@@ -224,37 +190,12 @@ export default function RegisterPage() {
 							</Link>
 							.
 						</p>
-						{/* Inline Toast */}
-						{toast && (
-							<div
-								className={`mb-6 px-4 py-3 rounded-[6px] text-sm font-medium animate-fade-in flex items-center gap-2
-                ${
-									toast.type === "success"
-										? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-										: "bg-red-50 text-red-600 border border-red-200"
-								}`}>
-								<span
-									className={`w-1.5 h-1.5 rounded-full flex-shrink-0
-                  ${toast.type === "success" ? "bg-emerald-500" : "bg-red-500"}`}
-								/>
-								{toast.message}
-							</div>
-						)}
-						{/* Submit */}
+
 						<button
 							type="submit"
-							disabled={isLoading}
-							className="
-                relative w-full py-3.5 mt-1
-                bg-brand-navy text-brand-white
-                text-sm font-medium tracking-widest uppercase
-                rounded-[6px] transition-all duration-200
-                hover:bg-[#252550] active:scale-[0.98]
-                disabled:opacity-60 disabled:cursor-not-allowed
-                focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-brand-gold focus-visible:ring-offset-2
-              ">
-							{isLoading ? (
+							disabled={isPending}
+							className="relative w-full py-3.5 mt-1 bg-brand-navy text-brand-white text-sm font-medium tracking-widest uppercase rounded-[6px] transition-all duration-200 hover:bg-[#252550] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2">
+							{isPending ? (
 								<span className="flex items-center justify-center gap-2">
 									<span className="w-4 h-4 border-2 border-brand-white/30 border-t-brand-white rounded-full animate-spin" />
 									Creating account…
@@ -268,12 +209,10 @@ export default function RegisterPage() {
 						</button>
 					</form>
 
-					{/* Ornamental divider */}
 					<div className="ornament-divider my-7 text-brand-gold/40 text-[9px]">
 						✦
 					</div>
 
-					{/* Footer */}
 					<p className="text-center text-sm text-brand-black/50">
 						Already have an account?{" "}
 						<Link
@@ -288,7 +227,7 @@ export default function RegisterPage() {
 	);
 }
 
-// ─── Password strength helper ──────────────────────────────────────────────────
+// Password strength helper — আলাদা lib/passwordStrength.ts এ নিয়ে যাওয়া যায় পরে
 function getPasswordStrength(password: string) {
 	if (!password) return { score: 0, label: "", color: "", textColor: "" };
 

@@ -1,9 +1,0 @@
-export { default as HeroSection } from "./HeroSection";
-export { default as StatsSection } from "./StatsSection";
-export { default as CategoriesSection } from "./CategoriesSection";
-export { default as FeaturedSection } from "./FeaturedSection";
-export { default as HowItWorksSection } from "./HowItWorksSection";
-export { default as TestimonialsSection } from "./TestimonialsSection";
-export { default as NewsletterSection } from "./NewsletterSection";
-export { default as SectionHeader } from "./SectionHeader";
-export { default as ProductCard } from "./ProductCard";

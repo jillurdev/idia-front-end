@@ -18,6 +18,12 @@ const protectedRoutes: Record<string, string[]> = {
 	"/owner": ["OWNER"],
 };
 
+const ROLE_HOME: Record<string, string> = {
+	OWNER: "/owner",
+	ADMIN: "/admin",
+	USER: "/dashboard",
+};
+
 function decodeJwtPayload(token: string) {
 	try {
 		const payload = token.split(".")[1];
@@ -44,7 +50,10 @@ export function middleware(request: NextRequest) {
 				route => pathname.startsWith(route),
 			)
 		) {
-			return NextResponse.redirect(new URL("/dashboard", request.url));
+			const payload = decodeJwtPayload(token);
+			const role = payload?.role;
+			const homePath = ROLE_HOME[role] || "/dashboard";
+			return NextResponse.redirect(new URL(homePath, request.url));
 		}
 
 		return NextResponse.next();

@@ -39,11 +39,10 @@ export default function RootLayout({
 			className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
 			<body>
 				<Providers>
-					<Navbar />
 					<main>{children}</main>
-					<Footer />
 				</Providers>
 			</body>
 		</html>
 	);
 }
+	

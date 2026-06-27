@@ -2,24 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
 
- 
-import { FormField } from "../../../components/ui/FormField";
-import { BrandPanel } from "../../../components/ui/BrandPanel";
+import { FormField } from "@/components/ui/FormField";
+import { BrandPanel } from "@/components/ui/BrandPanel";
 import { LoginFormValues, loginSchema } from "../schema";
-import { authApi } from "../api";
-
-type ToastState = { type: "success" | "error"; message: string } | null;
+import { useLogin } from "../hooks/useLogin";
 
 export default function LoginPage() {
-	const router = useRouter();
 	const [showPassword, setShowPassword] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [toast, setToast] = useState<ToastState>(null);
+	const { mutate: login, isPending } = useLogin();
 
 	const {
 		register,
@@ -29,70 +23,31 @@ export default function LoginPage() {
 		resolver: zodResolver(loginSchema),
 	});
 
-	const showToast = (type: "success" | "error", message: string) => {
-		setToast({ type, message });
-		setTimeout(() => setToast(null), 4000);
-	};
-
-	const onSubmit = async (data: LoginFormValues) => {
-		setIsLoading(true);
-		try {
-			const res = await authApi.login({
-				email: data.email,
-				password: data.password,
-			});
-			console.log("🚀 ~ onSubmit ~ res:", res)
-
-			showToast("success", `Welcome back, ${res.user.name}!`);
-			setTimeout(() => router.push("/dashboard"), 1000);
-		} catch (err: unknown) {
-			const message =
-				err instanceof Error ? err.message : "Something went wrong";
-			showToast("error", message);
-		} finally {
-			setIsLoading(false);
-		}
+	const onSubmit = (data: LoginFormValues) => {
+		login(data); // that's it
 	};
 
 	return (
 		<main className="flex min-h-screen">
 			<BrandPanel />
 
-			{/* ── Form panel ── */}
 			<div className="flex-1 bg-brand-white flex items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
 				<div className="w-full max-w-[400px] animate-fade-up">
-					{/* Inline Toast */}
-					{toast && (
-						<div
-							className={`mb-6 px-4 py-3 rounded-[6px] text-sm font-medium animate-fade-in flex items-center gap-2
-                ${
-									toast.type === "success"
-										? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-										: "bg-red-50 text-red-600 border border-red-200"
-								}`}>
-							<span
-								className={`w-1.5 h-1.5 rounded-full flex-shrink-0
-                  ${toast.type === "success" ? "bg-emerald-500" : "bg-red-500"}`}
-							/>
-							{toast.message}
-						</div>
-					)}
-
-					{/* Mobile header — logo + back to home */}
+					{/* Mobile header */}
 					<div className="lg:hidden mb-10">
 						<Link
 							href="/"
-							className="inline-flex items-center gap-1.5 text-[11px] text-brand-black/40 hover:text-brand-gold-dark transition-colors tracking-wide mb-6 group">
+							className="inline-flex items-center gap-1.5 text-[11px] text-brand-black/40 hover:text-brand-purple-dark transition-colors tracking-wide mb-6 group">
 							<ArrowLeft className="w-3 h-3 transition-transform duration-200 group-hover:-translate-x-0.5" />
 							Back to home
 						</Link>
 						<div className="text-center">
 							<Link href="/">
-								<h1 className="font-serif text-4xl font-semibold text-brand-navy hover:text-brand-gold-dark transition-colors">
+								<h1 className="font-serif text-4xl font-semibold text-brand-navy hover:text-brand-purple-dark transition-colors">
 									IdiaDesigns
 								</h1>
 							</Link>
-							<p className="font-serif italic text-brand-gold text-sm mt-1">
+							<p className="font-serif italic text-brand-purple text-sm mt-1">
 								Where elegance meets excellence
 							</p>
 						</div>
@@ -132,7 +87,7 @@ export default function LoginPage() {
 								<button
 									type="button"
 									onClick={() => setShowPassword(v => !v)}
-									className="text-brand-black/30 hover:text-brand-gold-dark transition-colors p-1"
+									className="text-brand-black/30 hover:text-brand-purple-dark transition-colors p-1"
 									aria-label={showPassword ? "Hide password" : "Show password"}>
 									{showPassword ? (
 										<EyeOff className="w-4 h-4" />
@@ -144,30 +99,19 @@ export default function LoginPage() {
 							{...register("password")}
 						/>
 
-						{/* Forgot password */}
 						<div className="flex justify-end -mt-2">
 							<Link
 								href="/forgot-password"
-								className="text-[11px] text-brand-gold-dark hover:text-brand-gold transition-colors tracking-wide">
+								className="text-[11px] text-brand-purple-dark hover:text-brand-purple transition-colors tracking-wide">
 								Forgot password?
 							</Link>
 						</div>
 
-						{/* Submit */}
 						<button
 							type="submit"
-							disabled={isLoading}
-							className="
-                relative w-full py-3.5 mt-2
-                bg-brand-navy text-brand-white
-                text-sm font-medium tracking-widest uppercase
-                rounded-[6px] transition-all duration-200
-                hover:bg-[#252550] active:scale-[0.98]
-                disabled:opacity-60 disabled:cursor-not-allowed
-                focus-visible:outline-none focus-visible:ring-2
-                focus-visible:ring-brand-gold focus-visible:ring-offset-2
-              ">
-							{isLoading ? (
+							disabled={isPending}
+							className="relative w-full py-3.5 mt-2 bg-brand-navy text-brand-white text-sm font-medium tracking-widest uppercase rounded-[6px] transition-all duration-200 hover:bg-brand-purple-dark active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple focus-visible:ring-offset-2">
+							{isPending ? (
 								<span className="flex items-center justify-center gap-2">
 									<span className="w-4 h-4 border-2 border-brand-white/30 border-t-brand-white rounded-full animate-spin" />
 									Signing in…
@@ -181,17 +125,15 @@ export default function LoginPage() {
 						</button>
 					</form>
 
-					{/* Ornamental divider */}
-					<div className="ornament-divider my-7 text-brand-gold/40 text-[9px]">
+					<div className="ornament-divider my-7 text-brand-purple/40 text-[9px]">
 						✦
 					</div>
 
-					{/* Footer */}
 					<p className="text-center text-sm text-brand-black/50">
 						Don&apos;t have an account?{" "}
 						<Link
 							href="/register"
-							className="text-brand-gold-dark font-medium hover:text-brand-gold transition-colors">
+							className="text-brand-purple-dark font-medium hover:text-brand-purple transition-colors">
 							Create one
 						</Link>
 					</p>
