@@ -1,11 +1,12 @@
-import React from 'react'
+import Reviews from "@/features/owner/reviews/components";
+import React from "react";
 
 const page = () => {
-  return (
-    <div>
-      Hello review
-    </div>
-  )
-}
+	return (
+		<div>
+			<Reviews />
+		</div>
+	);
+};
 
-export default page
+export default page;

@@ -1,0 +1,18 @@
+import { Star } from "lucide-react";
+
+export function StarRating({ rating }: { rating: number }) {
+	return (
+		<div className="flex items-center gap-0.5">
+			{[1, 2, 3, 4, 5].map(i => (
+				<Star
+					key={i}
+					className={`w-3.5 h-3.5 ${
+						i <= rating
+							? "fill-amber-400 text-amber-400"
+							: "fill-none text-border"
+					}`}
+				/>
+			))}
+		</div>
+	);
+}

@@ -34,10 +34,11 @@ export default function RootLayout({
 		<html
 			lang="en"
 			className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
-			<body>
-				<Providers>
-					{children}  
-				</Providers>
+			<body
+				data-new-gr-c-s-check-loaded="14.1305.0"
+				data-gr-ext-installed=""
+				cz-shortcut-listen="true">
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

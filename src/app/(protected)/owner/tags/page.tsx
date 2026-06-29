@@ -1,9 +1,10 @@
+import Tags from '@/features/owner/tags/components'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      Hello tags
+      <Tags/>
     </div>
   )
 }
