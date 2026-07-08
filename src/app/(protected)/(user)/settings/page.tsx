@@ -1,5 +1,4 @@
-import SettingsClient from '@/features/customer/settings/components'
-import React from 'react'
+import SettingsClient from '@/features/user/settings/components'
 
 const SettingsPage = () => {
   return (

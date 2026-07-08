@@ -1,4 +1,4 @@
-import { http } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
 import { Purchase } from "./types";
 
 export interface CreatePurchasePayload {
@@ -17,8 +17,10 @@ export interface PurchaseResponse {
 
 export const purchasesApi = {
 	createPurchase: (payload: CreatePurchasePayload) =>
-		http.post<PurchaseResponse>("/purchases", payload),
-	getMyPurchases: () => http.get<Purchase[]>("/purchases/my"),
+		httpClient.post<PurchaseResponse>("/purchases", payload),
+	getMyPurchases: () => httpClient.get<Purchase[]>("/purchases/my"),
 	downloadProduct: (purchaseId: string) =>
-		http.get<{ downloadUrl: string }>(`/purchases/${purchaseId}/download`),
+		httpClient.get<{ downloadUrl: string }>(
+			`/purchases/${purchaseId}/download`,
+		),
 };

@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authApi } from "../api";
-import { ApiError } from "@/services/http";
+import { ApiError } from "@/services/httpClient";
 
 const ROLE_REDIRECT: Record<string, string> = {
 	OWNER: "/owner",

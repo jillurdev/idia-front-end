@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Heart, Trash2, Tag } from "lucide-react";
 import Link from "next/link";
-import { SavedItem } from "@/features/customer/saved/types";
-import { savedApi } from "@/features/customer/saved/api";
+ 
 import { EmptyState } from "@/components/ui/EmptyState";
+import { SavedItem } from "@/features/user/saved/types";
+import { savedApi } from "@/features/user/saved/api";
 
 export default function SavedClient() {
 	const [saved, setSaved] = useState<SavedItem[]>([]);

@@ -1,11 +1,11 @@
-import { http } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
 import type { Review } from "./types";
 
 export const reviewApi = {
 	getAll: async (approved?: boolean): Promise<Review[]> => {
 		const params =
 			approved !== undefined ? { approved: String(approved) } : undefined;
-		const res = await http.get<{ data: Review[] }>(
+		const res = await httpClient.get<{ data: Review[] }>(
 			"/reviews/admin/all",
 			params,
 		);
@@ -13,7 +13,7 @@ export const reviewApi = {
 	},
 
 	approve: async (id: string): Promise<Review> => {
-		const res = await http.patch<{ data: Review }>(
+		const res = await httpClient.patch<{ data: Review }>(
 			`/reviews/${id}/approve`,
 			{},
 		);
@@ -21,6 +21,6 @@ export const reviewApi = {
 	},
 
 	delete: async (id: string): Promise<void> => {
-		await http.delete(`/reviews/${id}`);
+		await httpClient.delete(`/reviews/${id}`);
 	},
 };

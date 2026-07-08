@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 const PUBLIC_ROUTES = [
 	"/",
 	"/login",
@@ -15,7 +13,6 @@ const PUBLIC_ROUTES = [
 	"/contact",
 ];
 
-// Login করা থাকলে এই routes এ ঢুকতে দেবে না
 const AUTH_ROUTES = [
 	"/login",
 	"/register",
@@ -25,7 +22,7 @@ const AUTH_ROUTES = [
 ];
 
 const PROTECTED_ROUTES: Record<string, string[]> = {
-	"/dashboard": ["USER", "ADMIN", ],
+	"/dashboard": ["USER", "ADMIN"],
 	"/saved": ["USER", "ADMIN", "OWNER"],
 	"/purchases": ["USER", "ADMIN", "OWNER"],
 	"/profile": ["USER", "ADMIN", "OWNER"],
@@ -62,7 +59,7 @@ function isTokenExpired(payload: JwtPayload): boolean {
 
 function isPublicRoute(pathname: string): boolean {
 	return PUBLIC_ROUTES.some(route => {
-		if (route === "/") return pathname === "/"; // exact match শুধু
+		if (route === "/") return pathname === "/";
 		return pathname === route || pathname.startsWith(route + "/");
 	});
 }
@@ -80,15 +77,13 @@ function matchProtectedRoute(pathname: string): string[] | null {
 	return match ? match[1] : null;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 	const token = request.cookies.get("token")?.value;
 
 	const payload = token ? decodeJwtPayload(token) : null;
-	// Token আছে কিন্তু expired — invalid হিসেবে treat করো
 	const validPayload = payload && !isTokenExpired(payload) ? payload : null;
 
-	// Auth routes এ already logged in থাকলে redirect করো
 	if (isAuthRoute(pathname)) {
 		if (validPayload) {
 			const homePath = ROLE_HOME[validPayload.role] ?? "/dashboard";
@@ -97,29 +92,23 @@ export function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 
-	// Public routes — সবাই ঢুকতে পারবে
 	if (isPublicRoute(pathname)) {
 		return NextResponse.next();
 	}
 
-	// Protected routes check
 	const allowedRoles = matchProtectedRoute(pathname);
 
 	if (!allowedRoles) {
-		// না public না protected — allow করো
 		return NextResponse.next();
 	}
 
-	// Login নেই
 	if (!validPayload) {
 		const loginUrl = new URL("/login", request.url);
 		loginUrl.searchParams.set("next", pathname);
 		return NextResponse.redirect(loginUrl);
 	}
 
-	// Role check
 	if (!allowedRoles.includes(validPayload.role)) {
-		// নিজের home এ পাঠাও
 		const homePath = ROLE_HOME[validPayload.role] ?? "/";
 		return NextResponse.redirect(new URL(homePath, request.url));
 	}

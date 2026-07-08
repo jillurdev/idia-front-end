@@ -1,15 +1,14 @@
-import { http } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
 import { UserResponse } from "@/types/user";
 
 export const usersApi = {
-	 
-	getById: (id: string) => http.get<UserResponse>(`/users/${id}`),
+	getById: (id: string) => httpClient.get<UserResponse>(`/users/${id}`),
 
 	updateProfile: (payload: { name: string; phone: string }) =>
-		http.patch<UserResponse>("/users/profile", payload),
+		httpClient.patch<UserResponse>("/users/profile", payload),
 
 	changePassword: (payload: { currentPassword: string; newPassword: string }) =>
-		http.patch("/users/change-password", payload),
+		httpClient.patch("/users/change-password", payload),
 
-	deleteAccount: () => http.delete("/users/me"),
+	deleteAccount: () => httpClient.delete("/users/me"),
 };

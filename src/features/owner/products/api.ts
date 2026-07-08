@@ -1,4 +1,4 @@
-import { http } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
 import type {
 	Product,
 	CreateProductPayload,
@@ -9,17 +9,19 @@ import type {
 
 export const productApi = {
 	getAll: async (): Promise<Product[]> => {
-		const res = await http.get<{ data: Product[] }>("/products/admin/all");
+		const res = await httpClient.get<{ data: Product[] }>(
+			"/products/admin/all",
+		);
 		return res.data;
 	},
 
 	getOne: async (id: string): Promise<Product> => {
-		const res = await http.get<{ data: Product }>(`/products/${id}`);
+		const res = await httpClient.get<{ data: Product }>(`/products/${id}`);
 		return res.data;
 	},
 
 	create: async (payload: CreateProductPayload): Promise<Product> => {
-		const res = await http.post<{ data: Product }>("/products", payload);
+		const res = await httpClient.post<{ data: Product }>("/products", payload);
 		return res.data;
 	},
 
@@ -27,12 +29,15 @@ export const productApi = {
 		id: string,
 		payload: UpdateProductPayload,
 	): Promise<Product> => {
-		const res = await http.patch<{ data: Product }>(`/products/${id}`, payload);
+		const res = await httpClient.patch<{ data: Product }>(
+			`/products/${id}`,
+			payload,
+		);
 		return res.data;
 	},
 
 	togglePublish: async (id: string): Promise<Product> => {
-		const res = await http.patch<{ data: Product }>(
+		const res = await httpClient.patch<{ data: Product }>(
 			`/products/${id}/toggle-publish`,
 			{},
 		);
@@ -40,7 +45,7 @@ export const productApi = {
 	},
 
 	toggleFeature: async (id: string): Promise<Product> => {
-		const res = await http.patch<{ data: Product }>(
+		const res = await httpClient.patch<{ data: Product }>(
 			`/products/${id}/toggle-feature`,
 			{},
 		);
@@ -48,14 +53,14 @@ export const productApi = {
 	},
 
 	delete: async (id: string): Promise<void> => {
-		await http.delete(`/products/${id}`);
+		await httpClient.delete(`/products/${id}`);
 	},
 
 	addImage: async (
 		productId: string,
 		payload: AddImagePayload,
 	): Promise<ProductImage> => {
-		const res = await http.post<{ data: ProductImage }>(
+		const res = await httpClient.post<{ data: ProductImage }>(
 			`/products/${productId}/images`,
 			payload,
 		);
@@ -63,6 +68,6 @@ export const productApi = {
 	},
 
 	removeImage: async (productId: string, imageId: string): Promise<void> => {
-		await http.delete(`/products/${productId}/images/${imageId}`);
+		await httpClient.delete(`/products/${productId}/images/${imageId}`);
 	},
 };

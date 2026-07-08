@@ -1,8 +1,8 @@
-import { apiClient } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
 import { SavedItem } from "./types";
 
 export const savedApi = {
-	getMySaved: () => apiClient.get<SavedItem[]>("/saved/my"),
+	getMySaved: () => httpClient.get<SavedItem[]>("/saved/my"),
 	removeFromSaved: (productId: string) =>
-		apiClient.delete<void>(`/saved/${productId}`),
+		httpClient.delete<void>(`/saved/${productId}`),
 };

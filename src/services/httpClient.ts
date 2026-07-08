@@ -1,4 +1,4 @@
-// services/http.ts
+// services/httpClient.ts
 
 const BASE_URL =
 	process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api/v1";
@@ -53,7 +53,7 @@ function buildQuery(params: QueryParams): string {
 	return query ? `?${query}` : "";
 }
 
-export const http = {
+export const httpClient = {
 	get<T>(path: string, params?: QueryParams): Promise<T> {
 		const fullPath = params ? `${path}${buildQuery(params)}` : path;
 		return request<T>(fullPath);

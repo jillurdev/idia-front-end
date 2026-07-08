@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { categoryApi } from "../api";
-import { ApiError } from "@/services/http";
+import { ApiError } from "@/services/httpClient";
 import type { CreateCategoryPayload, UpdateCategoryPayload } from "../types";
 
 export const CATEGORIES_KEY = ["owner-categories"];

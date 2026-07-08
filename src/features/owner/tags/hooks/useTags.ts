@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { tagApi } from "../api";
-import { ApiError } from "@/services/http";
+import { ApiError } from "@/services/httpClient";
 import type { CreateTagPayload, UpdateTagPayload } from "../types";
 
 export const TAGS_KEY = ["owner-tags"];

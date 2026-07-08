@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { authApi } from "../api";
-import { ApiError } from "@/services/http";
+import { ApiError } from "@/services/httpClient";
 
 export function useForgotPassword() {
 	return useMutation({

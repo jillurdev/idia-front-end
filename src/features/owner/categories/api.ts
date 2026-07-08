@@ -1,4 +1,5 @@
-import { http } from "@/services/http";
+import { httpClient } from "@/services/httpClient";
+
 import type {
 	Category,
 	CreateCategoryPayload,
@@ -7,17 +8,20 @@ import type {
 
 export const categoryApi = {
 	getAll: async (): Promise<Category[]> => {
-		const res = await http.get<{ data: Category[] }>("/categories");
+		const res = await httpClient.get<{ data: Category[] }>("/categories");
 		return res.data;
 	},
 
 	getOne: async (id: string): Promise<Category> => {
-		const res = await http.get<{ data: Category }>(`/categories/${id}`);
+		const res = await httpClient.get<{ data: Category }>(`/categories/${id}`);
 		return res.data;
 	},
 
 	create: async (payload: CreateCategoryPayload): Promise<Category> => {
-		const res = await http.post<{ data: Category }>("/categories", payload);
+		const res = await httpClient.post<{ data: Category }>(
+			"/categories",
+			payload,
+		);
 		return res.data;
 	},
 
@@ -25,7 +29,7 @@ export const categoryApi = {
 		id: string,
 		payload: UpdateCategoryPayload,
 	): Promise<Category> => {
-		const res = await http.patch<{ data: Category }>(
+		const res = await httpClient.patch<{ data: Category }>(
 			`/categories/${id}`,
 			payload,
 		);
@@ -33,7 +37,7 @@ export const categoryApi = {
 	},
 
 	toggleActive: async (id: string): Promise<Category> => {
-		const res = await http.patch<{ data: Category }>(
+		const res = await httpClient.patch<{ data: Category }>(
 			`/categories/${id}/toggle-active`,
 			{},
 		);
@@ -41,6 +45,6 @@ export const categoryApi = {
 	},
 
 	delete: async (id: string): Promise<void> => {
-		await http.delete(`/categories/${id}`);
+		await httpClient.delete(`/categories/${id}`);
 	},
 };

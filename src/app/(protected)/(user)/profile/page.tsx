@@ -1,4 +1,4 @@
-import ProfileClient from "@/features/customer/profile";
+import ProfileClient from "@/features/user/profile";
 
 export const metadata = { title: "Profile" };
 
