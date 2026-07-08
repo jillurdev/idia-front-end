@@ -46,8 +46,14 @@ export default function Footer() {
 			<div className="h-[1px] bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
 
 			{/* Background concentric ornament */}
-			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] rounded-full border border-brand-purple/5 pointer-events-none" />
-			<div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[340px] h-[340px] rounded-full border border-brand-purple/5 pointer-events-none" />
+			<div
+				className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] rounded-full border border-brand-purple/5 pointer-events-none"
+				aria-hidden="true"
+			/>
+			<div
+				className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[340px] h-[340px] rounded-full border border-brand-purple/5 pointer-events-none"
+				aria-hidden="true"
+			/>
 
 			{/* ── Main grid ── */}
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
@@ -62,20 +68,20 @@ export default function Footer() {
 							</Link>
 							<div className="mt-1 flex items-center gap-2">
 								<div className="h-[1px] w-8 bg-brand-purple/40" />
-								<p className="font-serif italic text-brand-purple/80 text-[12px] tracking-wide">
+								<p className="font-serif italic text-brand-purple-light/70 text-[12px] tracking-wide">
 									Where elegance meets excellence
 								</p>
 							</div>
 						</div>
 
-						<p className="text-brand-white/40 text-[13px] font-light leading-relaxed max-w-[260px]">
+						<p className="text-brand-white/50 text-[13px] font-light leading-relaxed max-w-[260px]">
 							Premium motion graphics, templates, and digital assets — crafted
 							for creators who demand the finest.
 						</p>
 
 						{/* Socials */}
 						<div>
-							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-white/30 font-medium mb-3">
+							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-white/50 font-medium mb-3">
 								Follow us
 							</p>
 							<div className="flex items-center gap-2">
@@ -95,7 +101,7 @@ export default function Footer() {
 
 						{/* Newsletter */}
 						<div>
-							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-white/30 font-medium mb-3">
+							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-white/50 font-medium mb-3">
 								Stay updated
 							</p>
 							<NewsletterInput />
@@ -105,7 +111,7 @@ export default function Footer() {
 					{/* ── Link columns ── */}
 					{Object.entries(FOOTER_LINKS).map(([title, links]) => (
 						<div key={title}>
-							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-purple/70 font-medium mb-5">
+							<p className="text-[10px] tracking-[0.2em] uppercase text-brand-purple-light/70 font-medium mb-5">
 								{title}
 							</p>
 							<ul className="space-y-3">
@@ -113,7 +119,7 @@ export default function Footer() {
 									<li key={href}>
 										<Link
 											href={href}
-											className="group flex items-center gap-1 text-[13px] text-brand-white/45 hover:text-brand-white transition-colors duration-200">
+											className="group flex items-center gap-1 text-[13px] text-brand-white/50 hover:text-brand-white transition-colors duration-200">
 											<span>{label}</span>
 											<ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
 										</Link>
@@ -126,12 +132,14 @@ export default function Footer() {
 
 				{/* ── Bottom bar ── */}
 				<div className="mt-14 pt-6 border-t border-brand-white/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-					<p className="text-[11px] text-brand-white/25 font-light">
+					<p className="text-[11px] text-brand-white/50 font-light">
 						© {new Date().getFullYear()} IdiaDesigns. All rights reserved.
 					</p>
 
 					{/* Ornamental center mark */}
-					<div className="hidden sm:flex items-center gap-3 text-brand-purple/30 text-[9px]">
+					<div
+						className="hidden sm:flex items-center gap-3 text-brand-purple/30 text-[9px]"
+						aria-hidden="true">
 						<div className="h-[1px] w-12 bg-brand-purple/15" />
 						✦
 						<div className="h-[1px] w-12 bg-brand-purple/15" />
@@ -140,17 +148,17 @@ export default function Footer() {
 					<div className="flex items-center gap-4">
 						<Link
 							href="/privacy"
-							className="text-[11px] text-brand-white/25 hover:text-brand-white/50 transition-colors">
+							className="text-[11px] text-brand-white/50 hover:text-brand-white transition-colors">
 							Privacy
 						</Link>
 						<Link
 							href="/terms"
-							className="text-[11px] text-brand-white/25 hover:text-brand-white/50 transition-colors">
+							className="text-[11px] text-brand-white/50 hover:text-brand-white transition-colors">
 							Terms
 						</Link>
 						<Link
 							href="/license"
-							className="text-[11px] text-brand-white/25 hover:text-brand-white/50 transition-colors">
+							className="text-[11px] text-brand-white/50 hover:text-brand-white transition-colors">
 							License
 						</Link>
 					</div>
@@ -179,10 +187,11 @@ function NewsletterInput() {
 				type="email"
 				required
 				placeholder="your@email.com"
+				aria-label="Email address"
 				className="
           flex-1 min-w-0 px-3.5 py-2.5 text-[12px] font-sans
           bg-brand-white/5 border border-brand-white/10
-          text-brand-white placeholder:text-brand-white/20
+          text-brand-white placeholder:text-brand-white/35
           rounded-l-[6px] outline-none
           focus:border-brand-purple/40 focus:bg-brand-white/8
           transition-all duration-200

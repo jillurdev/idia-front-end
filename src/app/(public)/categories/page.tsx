@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+// NOTE: mirrors the Category model shape (id, name, slug, description, icon,
+// coverImage). When wiring to the real API, remember the schema also has
+// `isActive` and `order` — the public query should be
+// `where: { isActive: true }, orderBy: { order: "asc" }`.
 const CATEGORIES = [
 	{
 		id: "1",
@@ -63,7 +67,9 @@ export default function CategoriesPage() {
 		<div className="bg-brand-white">
 			{/* Hero */}
 			<section className="relative bg-brand-navy py-24 overflow-hidden">
-				<div className="absolute inset-0 pointer-events-none">
+				<div
+					className="absolute inset-0 pointer-events-none"
+					aria-hidden="true">
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-brand-purple/5" />
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full border border-brand-cyan/8" />
 				</div>
@@ -104,7 +110,9 @@ export default function CategoriesPage() {
 											/>
 										) : (
 											<div className="w-full h-full flex items-center justify-center bg-gradient-brand-soft">
-												<span className="text-5xl">{category.icon}</span>
+												<span className="text-5xl" aria-hidden="true">
+													{category.icon}
+												</span>
 											</div>
 										)}
 										<div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-brand-navy/10 to-transparent" />

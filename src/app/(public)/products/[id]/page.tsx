@@ -1,50 +1,18 @@
+import { PRODUCTS } from "@/lib/data/product";
+import { Star, ShieldCheck, Download, RefreshCw } from "lucide-react";
 import { notFound } from "next/navigation";
-import { Star, ShieldCheck, Download, RefreshCw, Quote } from "lucide-react";
 
-const PRODUCTS = [
-	{
-		id: "p1",
-		slug: "cinematic-intro-pack",
-		title: "Cinematic Intro Pack",
-		description:
-			"A collection of 12 cinematic intro animations designed for film, YouTube, and brand videos. Fully customizable text, colors, and timing — drag, drop, and edit in minutes.",
-		thumbnailUrl: "https://placehold.co/800x500/1a0f35/a855f7?text=Preview",
-		previewVideoUrl: null,
-		price: 24,
-		category: "Intro & Outro",
-		rating: 4.8,
-		reviewCount: 32,
-		images: [
-			"https://placehold.co/300x200/1a0f35/a855f7?text=1",
-			"https://placehold.co/300x200/1a0f35/22d3ee?text=2",
-			"https://placehold.co/300x200/1a0f35/a855f7?text=3",
-		],
-		tags: ["Intro", "Cinematic", "After Effects"],
-	},
-];
-
-const REVIEWS = [
-	{
-		name: "Sarah K.",
-		rating: 5,
-		comment: "Saved me hours of editing time. Beautifully made.",
-		avatar: "SK",
-	},
-	{
-		name: "Daniel R.",
-		rating: 4,
-		comment: "Great pack, easy to customize in After Effects.",
-		avatar: "DR",
-	},
-];
-
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
 	params,
 }: {
-	params: { slug: string };
+	params: Promise<{ id: string }>;
 }) {
-	const product = PRODUCTS.find(p => p.slug === params.slug);
-	if (!product) notFound();
+	const { id } = await params;
+	const product = PRODUCTS.find(p => p.slug === id);
+
+	if (!product) {
+		notFound();
+	}
 
 	return (
 		<div className="bg-brand-white">
@@ -102,7 +70,7 @@ export default function ProductDetailPage({
 								Reviews ({product.reviewCount})
 							</h2>
 							<div className="space-y-4">
-								{REVIEWS.map(r => (
+								{product.reviews.map(r => (
 									<div
 										key={r.name}
 										className="p-5 rounded-xl border border-border bg-surface-subtle">
