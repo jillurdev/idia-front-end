@@ -30,7 +30,7 @@ export default function EmailsPage() {
 			</div>
 
 			<EmailsTable
-				emails={data ?? []}
+				emails={data?.data ?? []}
 				isLoading={isLoading}
 				onViewDetail={setSelectedEmail}
 			/>

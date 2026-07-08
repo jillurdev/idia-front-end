@@ -4,8 +4,10 @@ import type { EmailLog, EmailLogFilters, SendEmailPayload } from "./types";
 const BASE_PATH = "/email-logs";
 
 export const emailsApi = {
-	getAll: async (filters: EmailLogFilters): Promise<EmailLog[]> => {
-		return httpClient.get<EmailLog[]>(BASE_PATH, {
+	getAll: async (
+		filters: EmailLogFilters,
+	): Promise<ApiResponse<EmailLog[]>> => {
+		return httpClient.get<ApiResponse<EmailLog[]>>(BASE_PATH, {
 			page: filters.page,
 			limit: filters.limit,
 		});
