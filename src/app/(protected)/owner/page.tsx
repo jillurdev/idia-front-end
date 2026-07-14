@@ -46,7 +46,7 @@ export default function OwnerDashboardPage() {
 				</h2>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 					<Link
-						href="/owner/categories/new"
+						href="/owner/categories"
 						className="p-5 rounded-xl border border-border bg-brand-white hover:border-brand-purple/30 hover:shadow-[0_4px_20px_rgba(168,85,247,0.08)] transition-all duration-300 group">
 						<FolderTree className="w-5 h-5 text-brand-purple-dark mb-3" />
 						<p className="text-[13px] font-medium text-brand-navy group-hover:text-brand-purple-dark transition-colors">
@@ -58,7 +58,7 @@ export default function OwnerDashboardPage() {
 					</Link>
 
 					<Link
-						href="/owner/products/new"
+						href="/owner/products"
 						className="p-5 rounded-xl border border-border bg-brand-white hover:border-brand-purple/30 hover:shadow-[0_4px_20px_rgba(168,85,247,0.08)] transition-all duration-300 group">
 						<Package className="w-5 h-5 text-brand-purple-dark mb-3" />
 						<p className="text-[13px] font-medium text-brand-navy group-hover:text-brand-purple-dark transition-colors">
@@ -70,7 +70,7 @@ export default function OwnerDashboardPage() {
 					</Link>
 
 					<Link
-						href="/owner/emails/new"
+						href="/owner/emails"
 						className="p-5 rounded-xl border border-border bg-brand-white hover:border-brand-purple/30 hover:shadow-[0_4px_20px_rgba(168,85,247,0.08)] transition-all duration-300 group">
 						<ShoppingCart className="w-5 h-5 text-brand-purple-dark mb-3" />
 						<p className="text-[13px] font-medium text-brand-navy group-hover:text-brand-purple-dark transition-colors">
