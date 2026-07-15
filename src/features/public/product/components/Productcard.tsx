@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { Play } from "lucide-react";
+import { Play, Star, Users } from "lucide-react";
 import type { Product } from "../types";
 
 export function ProductCard({ product }: { product: Product }) {
+	const reviewCount = product._count?.reviews ?? 0;
+	const purchaseCount = product._count?.purchases ?? 0;
+
 	return (
 		<Link
 			href={`/products/${product.slug}`}
@@ -32,7 +35,20 @@ export function ProductCard({ product }: { product: Product }) {
 					{product.title}
 				</h3>
 
-				<div className="mt-2 flex items-center justify-end">
+				<div className="mt-2 flex items-center justify-between">
+					{reviewCount > 0 ? (
+						<div className="flex items-center gap-1">
+							<Star className="w-3 h-3 fill-brand-cyan text-brand-cyan" />
+							<span className="text-[11px] text-text-secondary/70 font-medium">
+								{reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+							</span>
+						</div>
+					) : (
+						<span className="text-[11px] text-text-secondary/40">
+							No reviews yet
+						</span>
+					)}
+
 					<div className="flex items-center gap-1">
 						<span className="text-[11px] text-text-secondary/50 font-light">
 							from
@@ -42,6 +58,18 @@ export function ProductCard({ product }: { product: Product }) {
 						</span>
 					</div>
 				</div>
+
+				{purchaseCount > 0 && (
+					<div className="mt-2 flex items-center gap-1">
+						<Users
+							className="w-3 h-3 text-text-secondary/40"
+							aria-hidden="true"
+						/>
+						<span className="text-[11px] text-text-secondary/50 font-light">
+							{purchaseCount.toLocaleString()} purchased
+						</span>
+					</div>
+				)}
 			</div>
 		</Link>
 	);

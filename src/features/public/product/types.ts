@@ -40,10 +40,18 @@ export interface Product {
 	category: Category;
 	images: ProductImage[];
 	tags: { tag: Tag }[];
+	_count?: {
+		reviews: number;
+		purchases: number;
+	};
 }
 
 export interface ProductFilters {
 	categoryId?: string;
 	isFeatured?: boolean;
+	search?: string;
+	tags?: string; // comma-separated slugs
+	page: number;
+	limit: number;
 	[key: string]: string | number | boolean | null | undefined;
 }

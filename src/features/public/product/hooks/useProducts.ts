@@ -1,12 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { productsApi } from "../api";
 import type { ProductFilters } from "../types";
 
-export function useProducts(filters?: ProductFilters) {
+export function useProducts(filters: ProductFilters) {
 	return useQuery({
-		queryKey: ["public", "products", filters ?? {}],
+		queryKey: ["public", "products", filters],
 		queryFn: () => productsApi.getAll(filters),
-		select: res => res.data,
+		select: res => ({ products: res.data, meta: res.meta }),
+		placeholderData: keepPreviousData,
 		staleTime: 60_000,
 	});
 }
