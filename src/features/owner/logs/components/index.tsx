@@ -11,7 +11,7 @@ import type { LogAction, SiteLogFilters } from "@/features/owner/logs/types";
 
 export default function OwnerLogsPage() {
 	const { page, setPage, limit, setLimit, search, setSearch } = usePagination({
-		initialLimit: 20,
+		initialLimit: 10,
 	});
 
 	const [entity, setEntity] = useState("");

@@ -7,6 +7,7 @@ import {
 	Bell,
 	Bookmark,
 	ChevronDown,
+	LayoutDashboard,
 	LogIn,
 	Menu,
 	ShoppingBag,
@@ -19,6 +20,7 @@ import { ProfileDropdown } from "./profile-dropdown";
 import { NotifDropdown } from "./notif-dropdown";
 import { MobileMenu } from "./mobile-menu";
 import { useAuth } from "@/context/AuthContext";
+import { isAdmin } from "@/types/roles";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -84,6 +86,9 @@ export default function Navbar() {
 			}
 		: null;
 
+	const staffUser = navUser ? isAdmin(navUser.role) : false;
+	const dashboardHref = navUser?.role === "OWNER" ? "/owner" : "/admin";
+
 	return (
 		<>
 			<header
@@ -123,26 +128,40 @@ export default function Navbar() {
 					<div className="hidden lg:flex items-center gap-2">
 						{navUser ? (
 							<>
-								<NavIconBtn
-									icon={<Bookmark className="w-4 h-4" />}
-									label="Saved items"
-									onClick={() => handleProtected("/saved")}
-								/>
-								<NavIconBtn
-									icon={<ShoppingBag className="w-4 h-4" />}
-									label="Purchases"
-									onClick={() => handleProtected("/purchases")}
-								/>
-								<div ref={notifRef} className="relative">
-									<NavIconBtn
-										icon={<Bell className="w-4 h-4" />}
-										label="Notifications"
-										onClick={() => setNotifOpen(v => !v)}
-									/>
-									{notifOpen && (
-										<NotifDropdown onClose={() => setNotifOpen(false)} />
-									)}
-								</div>
+								{staffUser ? (
+									// Owner/Admin: a single, clear shortcut into their panel —
+									// no buyer-facing Saved/Purchases/Notifications icons here.
+									<Link
+										href={dashboardHref}
+										className="flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium text-brand-purple-dark hover:bg-brand-purple/5 rounded-[6px] transition-colors">
+										<LayoutDashboard className="w-4 h-4" />
+										Dashboard
+									</Link>
+								) : (
+									<>
+										<NavIconBtn
+											icon={<Bookmark className="w-4 h-4" />}
+											label="Saved items"
+											onClick={() => handleProtected("/saved")}
+										/>
+										<NavIconBtn
+											icon={<ShoppingBag className="w-4 h-4" />}
+											label="Purchases"
+											onClick={() => handleProtected("/purchases")}
+										/>
+										<div ref={notifRef} className="relative">
+											<NavIconBtn
+												icon={<Bell className="w-4 h-4" />}
+												label="Notifications"
+												onClick={() => setNotifOpen(v => !v)}
+											/>
+											{notifOpen && (
+												<NotifDropdown onClose={() => setNotifOpen(false)} />
+											)}
+										</div>
+									</>
+								)}
+
 								<div ref={dropdownRef} className="relative ml-1">
 									<button
 										onClick={() => setDropdownOpen(v => !v)}
@@ -158,7 +177,7 @@ export default function Navbar() {
 									</button>
 									{dropdownOpen && (
 										<ProfileDropdown
-											user={{ ...navUser, role: navUser.role ?? "USER" }}
+											user={navUser}
 											onClose={() => setDropdownOpen(false)}
 											onLogout={logout}
 										/>

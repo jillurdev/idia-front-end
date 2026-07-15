@@ -2,16 +2,16 @@ import Link from "next/link";
 import {
 	Bell,
 	Bookmark,
-	Grip,
+	LayoutDashboard,
 	LogOut,
-	Menu,
 	Settings,
 	ShoppingBag,
 	User,
 	X,
 } from "lucide-react";
-import { NavUser } from "./types";
+import type { NavUser } from "./types";
 import { NavAvatar } from "./nav-avatar";
+import { isAdmin } from "@/types/roles";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -36,43 +36,46 @@ export function MobileMenu({
 	onLogout: () => void;
 	onClose: () => void;
 }) {
-	const accountLinks = [
-		{
-			icon: <Grip className="w-3.5 h-3.5" />,
-			label: "Dashboard",
-			href: "/dashboard",
-		},
-		{
-			icon: <ShoppingBag className="w-4 h-4" />,
-			label: "Purchases",
-			href: "/purchases",
-		},
-		{
-			icon: <Bookmark className="w-4 h-4" />,
-			label: "Saved Items",
-			href: "/saved",
-		},
-		{
-			icon: <Bell className="w-4 h-4" />,
-			label: "Notifications",
-			href: "/notifications",
-		},
-		{ icon: <User className="w-4 h-4" />, label: "Profile", href: "/profile" },
-		{
-			icon: <Settings className="w-4 h-4" />,
-			label: "Settings",
-			href: "/settings",
-		},
-		...(user?.role === "ADMIN" || user?.role === "OWNER"
-			? [
-					{
-						icon: <Grip className="w-4 h-4" />,
-						label: "Admin Panel",
-						href: "/admin",
-					},
-				]
-			: []),
-	];
+	const staffUser = user ? isAdmin(user.role) : false;
+	const dashboardHref = user?.role === "OWNER" ? "/owner" : "/admin";
+
+	// Owner/Admin see only a single dashboard shortcut here —
+	// everything else lives inside the dashboard itself.
+	const accountLinks = staffUser
+		? [
+				{
+					icon: <LayoutDashboard className="w-4 h-4" />,
+					label: "Go to Dashboard",
+					href: dashboardHref,
+				},
+			]
+		: [
+				{
+					icon: <ShoppingBag className="w-4 h-4" />,
+					label: "Purchases",
+					href: "/purchases",
+				},
+				{
+					icon: <Bookmark className="w-4 h-4" />,
+					label: "Saved Items",
+					href: "/saved",
+				},
+				{
+					icon: <Bell className="w-4 h-4" />,
+					label: "Notifications",
+					href: "/notifications",
+				},
+				{
+					icon: <User className="w-4 h-4" />,
+					label: "Profile",
+					href: "/profile",
+				},
+				{
+					icon: <Settings className="w-4 h-4" />,
+					label: "Settings",
+					href: "/settings",
+				},
+			];
 
 	return (
 		<>
@@ -120,7 +123,7 @@ export function MobileMenu({
 						<>
 							<div className="my-4 border-t border-surface-subtle" />
 							<p className="px-3 text-[10px] tracking-[0.15em] uppercase text-brand-black/30 font-medium mb-2">
-								My Account
+								{staffUser ? "Dashboard" : "My Account"}
 							</p>
 							{accountLinks.map(({ icon, label, href }) => (
 								<button
@@ -129,8 +132,15 @@ export function MobileMenu({
 										onProtected(href);
 										onClose();
 									}}
-									className="w-full flex items-center gap-3 px-3 py-3 rounded-[6px] text-[14px] text-brand-black/70 hover:bg-surface-subtle/60 hover:text-brand-navy transition-colors mb-0.5 text-left">
-									<span className="text-brand-purple-dark">{icon}</span>
+									className={cn(
+										"w-full flex items-center gap-3 px-3 py-3 rounded-[6px] text-[14px] transition-colors mb-0.5 text-left",
+										staffUser
+											? "font-medium text-brand-purple-dark hover:bg-brand-purple/5"
+											: "text-brand-black/70 hover:bg-surface-subtle/60 hover:text-brand-navy",
+									)}>
+									<span className={staffUser ? "" : "text-brand-purple-dark"}>
+										{icon}
+									</span>
 									{label}
 								</button>
 							))}

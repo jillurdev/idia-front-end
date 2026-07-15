@@ -2,21 +2,15 @@ import { useRouter } from "next/navigation";
 import {
 	Bookmark,
 	ClipboardList,
-	Grip,
+	LayoutDashboard,
 	LogOut,
 	Settings,
 	ShoppingBag,
 	User,
 	Crown,
 } from "lucide-react";
-import { AppRole, isAdmin, ROLE_CONFIG } from "@/types/roles";
-
-export interface NavUser {
-	name: string;
-	email: string;
-	avatar?: string | null;
-	role: AppRole;
-}
+import { isAdmin, ROLE_CONFIG } from "@/types/roles";
+import type { NavUser } from "./types";
 
 export function ProfileDropdown({
 	user,
@@ -29,18 +23,15 @@ export function ProfileDropdown({
 }) {
 	const router = useRouter();
 	const roleConf = ROLE_CONFIG[user.role];
+	const staffUser = isAdmin(user.role); // true for ADMIN and OWNER
 
 	const go = (href: string) => {
 		onClose();
 		router.push(href);
 	};
 
-	const links = [
-		{
-			icon: <Grip className="w-3.5 h-3.5" />,
-			label: "Dashboard",
-			href: "/dashboard",
-		},
+	// Regular buyers get the full account menu.
+	const buyerLinks = [
 		{
 			icon: <User className="w-3.5 h-3.5" />,
 			label: "My Profile",
@@ -66,23 +57,15 @@ export function ProfileDropdown({
 			label: "Settings",
 			href: "/settings",
 		},
-		...(isAdmin(user.role)
-			? [
-					{
-						icon: <Grip className="w-3.5 h-3.5" />,
-						label: "Admin panel",
-						href: "/admin",
-					},
-				]
-			: []),
 	];
+
+	const dashboardHref = user.role === "OWNER" ? "/owner" : "/admin";
 
 	return (
 		<div className="absolute right-0 top-full mt-2 w-60 bg-brand-white border border-surface-subtle rounded-[10px] shadow-[0_8px_30px_rgba(0,0,0,0.10)] overflow-hidden animate-fade-in z-50">
 			{/* User info header */}
 			<div className="px-4 py-3.5 border-b border-surface-subtle">
 				<div className="flex items-center gap-2.5">
-					{/* Avatar */}
 					<div
 						className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold shrink-0"
 						style={{ backgroundColor: roleConf.bg, color: roleConf.text }}>
@@ -98,7 +81,6 @@ export function ProfileDropdown({
 					</div>
 				</div>
 
-				{/* Role badge — only for non-USER roles */}
 				{user.role !== "USER" && (
 					<div className="mt-2 flex items-center gap-1.5">
 						<span
@@ -116,20 +98,30 @@ export function ProfileDropdown({
 				)}
 			</div>
 
-			{/* Nav links */}
-			<div className="py-1.5">
-				{links.map(({ icon, label, href }) => (
+			{staffUser ? (
+				// Owner/Admin: minimal menu — everything else happens inside the dashboard itself.
+				<div className="py-1.5">
 					<button
-						key={href}
-						onClick={() => go(href)}
-						className="w-full flex items-center gap-3 px-4 py-2.5 text-[13px] text-brand-black/70 hover:bg-surface-subtle/50 hover:text-brand-navy transition-colors text-left">
-						<span className="text-brand-purple-dark">{icon}</span>
-						{label}
+						onClick={() => go(dashboardHref)}
+						className="w-full flex items-center gap-3 px-4 py-2.5 text-[13px] font-medium text-brand-purple-dark hover:bg-brand-purple/5 transition-colors text-left">
+						<LayoutDashboard className="w-3.5 h-3.5" />
+						Go to Dashboard
 					</button>
-				))}
-			</div>
+				</div>
+			) : (
+				<div className="py-1.5">
+					{buyerLinks.map(({ icon, label, href }) => (
+						<button
+							key={href}
+							onClick={() => go(href)}
+							className="w-full flex items-center gap-3 px-4 py-2.5 text-[13px] text-brand-black/70 hover:bg-surface-subtle/50 hover:text-brand-navy transition-colors text-left">
+							<span className="text-brand-purple-dark">{icon}</span>
+							{label}
+						</button>
+					))}
+				</div>
+			)}
 
-			{/* Logout */}
 			<div className="border-t border-surface-subtle py-1.5">
 				<button
 					onClick={() => {
