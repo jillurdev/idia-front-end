@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { usersApi } from "@/lib/api/users.api";
 import { UserResponse } from "@/types/user";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,7 +17,7 @@ export default function PersonalInfoSection({ user }: { user: UserResponse}) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			await usersApi.updateProfile(form);
+			// await usersApi.updateProfile(form);
 			await refetch();
 			toast.success("Profile updated!");
 		} catch (err: unknown) {

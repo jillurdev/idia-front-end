@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import ProductsHeader from "./products-header";
 import ProductsFilters from "./products-filters";
 import { ProductsResponse } from "@/types/product";
-import { productsApi } from "@/lib/api/products.api";
 import ProductsGrid from "./products-grid";
 
 export default function ProductsPageClient() {
@@ -22,7 +21,7 @@ export default function ProductsPageClient() {
 
 	const { data, isLoading, isError } = useQuery<ProductsResponse>({
 		queryKey: ["products", params],
-		queryFn: () => productsApi.getProducts(params),
+		// queryFn: () => productsApi.getProducts(params),
 	});
 
 	if (isLoading) return <div>Loading...</div>;

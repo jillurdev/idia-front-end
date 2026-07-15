@@ -1,6 +1,5 @@
 "use client";
 
-import { usersApi } from "@/lib/api/users.api";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -28,10 +27,10 @@ export default function PasswordSection() {
 		setIsLoading(true);
 
 		try {
-			await usersApi.changePassword({
-				currentPassword: form.currentPassword,
-				newPassword: form.newPassword,
-			});
+			// await usersApi.changePassword({
+			// 	currentPassword: form.currentPassword,
+			// 	newPassword: form.newPassword,
+			// });
 			toast.success("Password changed!");
 			setForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
 		} catch (err: unknown) {

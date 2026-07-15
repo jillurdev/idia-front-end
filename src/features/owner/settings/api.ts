@@ -8,14 +8,17 @@ import type {
 } from "./types";
 
 export const settingsApi = {
-	getAll: () => httpClient.get<SiteSetting[]>("/owner/settings"),
+	getAll: () => httpClient.get<ApiResponse<SiteSetting[]>>("/owner/settings"),
 
 	upsert: (payload: UpsertSettingPayload) =>
-		httpClient.post<SiteSetting>("/owner/settings", payload),
+		httpClient.post<ApiResponse<SiteSetting>>("/owner/settings", payload),
 
 	updateProfile: (payload: UpdateProfilePayload) =>
-		httpClient.patch<OwnerProfile>("/users/profile", payload),
+		httpClient.patch<ApiResponse<OwnerProfile>>("/users/profile", payload),
 
 	changePassword: (payload: ChangePasswordPayload) =>
-		httpClient.patch<{ message: string }>("/users/change-password", payload),
+		httpClient.patch<ApiResponse<{ message: string }>>(
+			"/users/change-password",
+			payload,
+		),
 };

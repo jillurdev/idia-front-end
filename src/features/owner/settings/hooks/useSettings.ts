@@ -8,15 +8,16 @@ export function useSettings() {
 	return useQuery({
 		queryKey: settingsQueryKey,
 		queryFn: settingsApi.getAll,
-		select: data => {
+		select: res => {
+			console.log("🚀 ~ useSettings ~ res:", res)
 			const byGroup: Record<SettingGroup, Record<string, string>> = {
 				general: {},
 				payment: {},
 				email: {},
 			};
-			data.forEach((setting: SiteSetting) => {
-				if (byGroup[setting.group]) {
-					byGroup[setting.group][setting.key] = setting.value;
+			res.data.forEach((setting: SiteSetting) => {
+				if (byGroup[setting.group as SettingGroup]) {
+					byGroup[setting.group as SettingGroup][setting.key] = setting.value;
 				}
 			});
 			return byGroup;
