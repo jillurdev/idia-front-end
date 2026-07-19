@@ -12,3 +12,7 @@ export interface SavedItem {
 		};
 	};
 }
+
+export interface ToggleSavedResponse {
+	saved: boolean;
+}

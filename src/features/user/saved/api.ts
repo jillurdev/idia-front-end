@@ -1,8 +1,14 @@
 import { httpClient } from "@/services/httpClient";
-import { SavedItem } from "./types";
+import type { SavedItem, ToggleSavedResponse } from "./types";
 
 export const savedApi = {
-	getMySaved: () => httpClient.get<SavedItem[]>("/saved/my"),
-	removeFromSaved: (productId: string) =>
-		httpClient.delete<void>(`/saved/${productId}`),
+	// GET /saved-items/me — the logged-in user's saved products
+	getMine: () => httpClient.get<ApiResponse<SavedItem[]>>("/saved-items/me"),
+
+	// POST /saved-items/:productId/toggle — adds if not saved, removes if already saved
+	toggle: (productId: string) =>
+		httpClient.post<ApiResponse<ToggleSavedResponse>>(
+			`/saved-items/${productId}/toggle`,
+			{},
+		),
 };

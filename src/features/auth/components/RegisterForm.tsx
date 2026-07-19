@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, UserPlus, ArrowLeft } from "lucide-react";
 
@@ -10,6 +10,8 @@ import { BrandPanel } from "@/components/ui/BrandPanel";
 import { FormField } from "@/components/ui/FormField";
 import { RegisterFormValues, registerSchema } from "../schema";
 import { useRegister } from "../hooks/useRegister";
+import { getPasswordStrength } from "@/lib/passwordStrength";
+import { PhoneField } from "@/components/ui/Phonefield";
 
 export default function RegisterPage() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +22,11 @@ export default function RegisterPage() {
 		register,
 		handleSubmit,
 		watch,
+		control,
 		formState: { errors },
 	} = useForm<RegisterFormValues>({
 		resolver: zodResolver(registerSchema),
+		defaultValues: { phone: "" },
 	});
 
 	const passwordValue = watch("password", "");
@@ -88,13 +92,18 @@ export default function RegisterPage() {
 						/>
 
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<FormField
-								label="Phone number"
-								type="tel"
-								placeholder="+1 234 567 8900"
-								autoComplete="tel"
-								error={errors.phone?.message}
-								{...register("phone")}
+							<Controller
+								name="phone"
+								control={control}
+								render={({ field }) => (
+									<PhoneField
+										label="Phone number"
+										value={field.value}
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+										error={errors.phone?.message}
+									/>
+								)}
 							/>
 							<FormField
 								label="Email address"
@@ -227,37 +236,4 @@ export default function RegisterPage() {
 	);
 }
 
-// Password strength helper — আলাদা lib/passwordStrength.ts এ নিয়ে যাওয়া যায় পরে
-function getPasswordStrength(password: string) {
-	if (!password) return { score: 0, label: "", color: "", textColor: "" };
 
-	let score = 0;
-	if (password.length >= 8) score++;
-	if (/[A-Z]/.test(password)) score++;
-	if (/[0-9]/.test(password)) score++;
-	if (/[^A-Za-z0-9]/.test(password)) score++;
-
-	const levels = [
-		{ score: 1, label: "Weak", color: "bg-red-400", textColor: "text-red-400" },
-		{
-			score: 2,
-			label: "Fair",
-			color: "bg-amber-400",
-			textColor: "text-amber-500",
-		},
-		{
-			score: 3,
-			label: "Good",
-			color: "bg-brand-purple",
-			textColor: "text-brand-purple-dark",
-		},
-		{
-			score: 4,
-			label: "Strong",
-			color: "bg-emerald-500",
-			textColor: "text-emerald-600",
-		},
-	];
-
-	return levels[score - 1] ?? { score: 0, label: "", color: "", textColor: "" };
-}

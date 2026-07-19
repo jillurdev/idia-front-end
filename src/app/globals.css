@@ -122,3 +122,38 @@ pre {
 	background-clip: text;
 	color: transparent;
 }
+
+/* react-phone-number-input — restyle to match FormField look */
+.phone-field-shell .PhoneInput {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+}
+.phone-field-shell .PhoneInputCountry {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0 0.5rem;
+	border-right: 1px solid var(--color-border-subtle);
+}
+.phone-field-shell .PhoneInputCountrySelect {
+	outline: none;
+	background: transparent;
+	font-size: 0.8125rem;
+	color: var(--color-text-primary);
+}
+.phone-field-shell .PhoneInputCountryIcon {
+	width: 1.25rem;
+	height: 1.25rem;
+	border-radius: 2px;
+	box-shadow: none;
+}
+.phone-field-shell .PhoneInputInput {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 0.875rem;
+	flex: 1;
+	min-width: 0;
+}

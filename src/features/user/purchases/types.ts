@@ -1,17 +1,21 @@
+export type PurchaseStatus = "PENDING" | "COMPLETED" | "FAILED" | "REFUNDED";
+export type PaymentGateway = "LEMONSQUEEZY" | "SSLCOMMERZ";
+
 export interface Purchase {
 	id: string;
 	pricePaid: number;
-	currency: string;
-	status: string;
+	currency: "USD" | "BDT";
+	gateway: PaymentGateway;
+	status: PurchaseStatus;
 	purchasedAt: string;
 	product: {
 		id: string;
 		title: string;
 		slug: string;
 		thumbnailUrl: string;
-		price: number;
-		category: {
-			name: string;
-		};
 	};
+}
+
+export interface CheckoutResponse {
+	checkoutUrl: string;
 }

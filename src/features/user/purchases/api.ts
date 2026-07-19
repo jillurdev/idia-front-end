@@ -1,26 +1,13 @@
 import { httpClient } from "@/services/httpClient";
-import { Purchase } from "./types";
-
-export interface CreatePurchasePayload {
-	productId: string;
-	quantity: number;
-}
-
-export interface PurchaseResponse {
-	id: string;
-	productId: string;
-	userId: string;
-	quantity: number;
-	status: string;
-	createdAt: string;
-}
+import type { CheckoutResponse, Purchase } from "./types";
 
 export const purchasesApi = {
-	createPurchase: (payload: CreatePurchasePayload) =>
-		httpClient.post<PurchaseResponse>("/purchases", payload),
-	getMyPurchases: () => httpClient.get<Purchase[]>("/purchases/my"),
-	downloadProduct: (purchaseId: string) =>
-		httpClient.get<{ downloadUrl: string }>(
-			`/purchases/${purchaseId}/download`,
-		),
+	// POST /purchases/checkout — starts a LemonSqueezy checkout session
+	checkout: (productId: string) =>
+		httpClient.post<ApiResponse<CheckoutResponse>>("/purchases/checkout", {
+			productId,
+		}),
+
+	// GET /purchases/me — the logged-in user's purchase history
+	getMine: () => httpClient.get<ApiResponse<Purchase[]>>("/purchases/me"),
 };

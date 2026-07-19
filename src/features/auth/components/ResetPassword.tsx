@@ -13,7 +13,7 @@ import { useResetPassword } from "@/features/auth/hooks/useResetPassword";
 
 const schema = z
 	.object({
-		newPassword: z.string().min(8, "Password must be at least 8 characters"),
+		newPassword: z.string().min(6, "Password must be at least 6 characters"),
 		confirmPassword: z.string(),
 	})
 	.refine(d => d.newPassword === d.confirmPassword, {
@@ -108,7 +108,7 @@ export default function ResetPassword({token}:{token:string}) {
 						<FormField
 							label="New password"
 							type={showPassword ? "text" : "password"}
-							placeholder="Min. 8 characters"
+							placeholder="Min. 6 characters"
 							autoComplete="new-password"
 							error={errors.newPassword?.message}
 							rightElement={

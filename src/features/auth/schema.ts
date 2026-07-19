@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 // ─── Login ────────────────────────────────────────────────────────────────────
 export const loginSchema = z.object({
@@ -25,7 +26,9 @@ export const registerSchema = z
 		phone: z
 			.string()
 			.min(1, "Phone number is required")
-			.regex(/^\+?[0-9\s\-()]{7,20}$/, "Please enter a valid phone number"),
+			.refine(val => isValidPhoneNumber(val), {
+				message: "Please enter a valid phone number for the selected country",
+			}),
 		email: z
 			.string()
 			.min(1, "Email is required")
@@ -33,7 +36,7 @@ export const registerSchema = z
 		password: z
 			.string()
 			.min(1, "Password is required")
-			.min(8, "Password must be at least 8 characters"),
+			.min(6, "Password must be at least 6 characters"),
 		confirmPassword: z.string().min(1, "Please confirm your password"),
 	})
 	.refine(data => data.password === data.confirmPassword, {

@@ -1,14 +1,24 @@
 "use client";
 
-import { ShieldCheck, Download, RefreshCw } from "lucide-react";
-import { notFound, useParams } from "next/navigation";
+import { ShieldCheck, Download, RefreshCw, Heart } from "lucide-react";
+import { notFound, useParams, usePathname, useRouter } from "next/navigation";
 import { useProductBySlug } from "../hooks/useProducts";
+import { useCheckout } from "@/features/user/purchases/hooks/useCheckout";
+import { useMySaved } from "@/features/user/saved/hooks/useMySaved";
+import { useToggleSaved } from "@/features/user/saved/hooks/useToggleSaved";
+import { useAuth } from "@/context/AuthContext";
 
-export default function ProductDetailPage() {
+export default function ProductDetailClient() {
 	const params = useParams<{ id: string }>();
 	const slug = params.id; // route folder is [id] but the value passed is the product slug
+	const pathname = usePathname();
+	const router = useRouter();
+	const { user } = useAuth();
 
 	const { data: product, isLoading, isError } = useProductBySlug(slug);
+	const { buyNow, isPending } = useCheckout();
+	const { data: savedItems } = useMySaved(!!user);
+	const { toggle, isToggling } = useToggleSaved();
 
 	if (isError) {
 		notFound();
@@ -23,6 +33,8 @@ export default function ProductDetailPage() {
 	}
 
 	const galleryImages = product.images.filter(img => !img.isCover);
+	const isSaved =
+		savedItems?.some(item => item.product.id === product.id) ?? false;
 
 	return (
 		<div className="bg-brand-white">
@@ -97,11 +109,42 @@ export default function ProductDetailPage() {
 								<span className="text-[13px] text-text-secondary/50">USD</span>
 							</div>
 
-							{/* TODO: wire to purchase flow — requires login, then LemonSqueezy/SSLCommerz checkout */}
-							<button className="mt-6 w-full flex items-center justify-center gap-2.5 px-6 py-4 bg-brand-purple text-brand-white text-[13px] font-semibold tracking-widest uppercase rounded-[6px] hover:bg-brand-purple-dark transition-all duration-200 active:scale-[0.98]">
-								<Download className="w-4 h-4" />
-								Buy Now
-							</button>
+							{/* Login-gated LemonSqueezy checkout */}
+							<div className="mt-6 flex gap-2.5">
+								<button
+									onClick={() => buyNow(product.id, pathname)}
+									disabled={isPending}
+									className="flex-1 flex items-center justify-center gap-2.5 px-6 py-4 bg-brand-purple text-brand-white text-[13px] font-semibold tracking-widest uppercase rounded-[6px] hover:bg-brand-purple-dark transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
+									{isPending ? (
+										<span className="w-4 h-4 border-2 border-brand-white/30 border-t-brand-white rounded-full animate-spin" />
+									) : (
+										<Download className="w-4 h-4" />
+									)}
+									{isPending ? "Redirecting…" : "Buy Now"}
+								</button>
+
+								<button
+									onClick={() => {
+										if (!user) {
+											router.push(
+												`/login?next=${encodeURIComponent(pathname)}`,
+											);
+											return;
+										}
+										toggle(product.id);
+									}}
+									disabled={isToggling}
+									aria-label={isSaved ? "Remove from saved" : "Save item"}
+									className="flex-shrink-0 w-[52px] flex items-center justify-center border border-border rounded-[6px] hover:border-brand-purple/40 transition-colors disabled:opacity-60">
+									<Heart
+										className={`w-5 h-5 transition-colors ${
+											isSaved
+												? "fill-brand-purple text-brand-purple"
+												: "text-brand-black/40"
+										}`}
+									/>
+								</button>
+							</div>
 
 							<div className="mt-6 space-y-3 pt-6 border-t border-border">
 								<div className="flex items-center gap-2.5">

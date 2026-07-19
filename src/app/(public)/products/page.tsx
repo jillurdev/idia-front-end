@@ -1,15 +1,16 @@
-import ProductsPage from '@/features/public/product/components';
-import React from 'react'
+import { Suspense } from "react";
+import ProductsPage from "@/features/public/product/components";
+
 export const metadata = {
 	title: "Browse Products",
 };
 
 const page = () => {
-  return (
-	<div>
-	  <ProductsPage/>
-	</div>
-  )
-}
+	return (
+		<Suspense fallback={null}>
+			<ProductsPage />
+		</Suspense>
+	);
+};
 
-export default page
+export default page;
