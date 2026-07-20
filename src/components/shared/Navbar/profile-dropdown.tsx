@@ -30,8 +30,14 @@ export function ProfileDropdown({
 		router.push(href);
 	};
 
-	// Regular buyers get the full account menu.
+	// Regular buyers get the full account menu. Dashboard is first since
+	// /dashboard is the USER role's home page (see proxy.ts ROLE_HOME).
 	const buyerLinks = [
+		{
+			icon: <LayoutDashboard className="w-3.5 h-3.5" />,
+			label: "Dashboard",
+			href: "/dashboard",
+		},
 		{
 			icon: <User className="w-3.5 h-3.5" />,
 			label: "My Profile",

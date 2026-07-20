@@ -8,7 +8,7 @@ import { useMySaved } from "@/features/user/saved/hooks/useMySaved";
 import { useToggleSaved } from "@/features/user/saved/hooks/useToggleSaved";
 import { useAuth } from "@/context/AuthContext";
 
-export default function ProductDetailClient() {
+export default function ProductDetailPage() {
 	const params = useParams<{ id: string }>();
 	const slug = params.id; // route folder is [id] but the value passed is the product slug
 	const pathname = usePathname();
@@ -112,7 +112,7 @@ export default function ProductDetailClient() {
 							{/* Login-gated LemonSqueezy checkout */}
 							<div className="mt-6 flex gap-2.5">
 								<button
-									onClick={() => buyNow(product.id, pathname)}
+									onClick={() => buyNow([product.id], pathname)}
 									disabled={isPending}
 									className="flex-1 flex items-center justify-center gap-2.5 px-6 py-4 bg-brand-purple text-brand-white text-[13px] font-semibold tracking-widest uppercase rounded-[6px] hover:bg-brand-purple-dark transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
 									{isPending ? (

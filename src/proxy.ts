@@ -25,6 +25,7 @@ const PROTECTED_ROUTES: Record<string, string[]> = {
 	"/dashboard": ["USER", "ADMIN"],
 	"/saved": ["USER", "ADMIN", "OWNER"],
 	"/purchases": ["USER", "ADMIN", "OWNER"],
+	"/notifications": ["USER", "ADMIN", "OWNER"],
 	"/profile": ["USER", "ADMIN", "OWNER"],
 	"/admin": ["ADMIN", "OWNER"],
 	"/owner": ["OWNER"],

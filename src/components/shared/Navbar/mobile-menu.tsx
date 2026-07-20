@@ -13,6 +13,7 @@ import type { NavUser } from "./types";
 import { NavAvatar } from "./nav-avatar";
 import { isAdmin } from "@/types/roles";
 import { cn } from "@/lib/utils";
+import { useNotifications } from "@/features/user/notifications/hooks/useNotifications";
 
 const NAV_LINKS = [
 	{ label: "Home", href: "/" },
@@ -38,6 +39,7 @@ export function MobileMenu({
 }) {
 	const staffUser = user ? isAdmin(user.role) : false;
 	const dashboardHref = user?.role === "OWNER" ? "/owner" : "/admin";
+	const { unreadCount } = useNotifications();
 
 	// Owner/Admin see only a single dashboard shortcut here —
 	// everything else lives inside the dashboard itself.
@@ -50,6 +52,11 @@ export function MobileMenu({
 				},
 			]
 		: [
+				{
+					icon: <LayoutDashboard className="w-4 h-4" />,
+					label: "Dashboard",
+					href: "/dashboard",
+				},
 				{
 					icon: <ShoppingBag className="w-4 h-4" />,
 					label: "Purchases",
@@ -64,6 +71,7 @@ export function MobileMenu({
 					icon: <Bell className="w-4 h-4" />,
 					label: "Notifications",
 					href: "/notifications",
+					badge: unreadCount,
 				},
 				{
 					icon: <User className="w-4 h-4" />,
@@ -125,7 +133,7 @@ export function MobileMenu({
 							<p className="px-3 text-[10px] tracking-[0.15em] uppercase text-brand-black/30 font-medium mb-2">
 								{staffUser ? "Dashboard" : "My Account"}
 							</p>
-							{accountLinks.map(({ icon, label, href }) => (
+							{accountLinks.map(({ icon, label, href, badge }) => (
 								<button
 									key={href}
 									onClick={() => {
@@ -141,7 +149,12 @@ export function MobileMenu({
 									<span className={staffUser ? "" : "text-brand-purple-dark"}>
 										{icon}
 									</span>
-									{label}
+									<span className="flex-1">{label}</span>
+									{!!badge && (
+										<span className="min-w-[18px] h-[18px] px-1 bg-brand-purple text-brand-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+											{badge > 9 ? "9+" : badge}
+										</span>
+									)}
 								</button>
 							))}
 						</>

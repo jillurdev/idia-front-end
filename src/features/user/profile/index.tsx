@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import AvatarSection from "./sections/avatar-section";
-import PersonalInfoSection from "./sections/personal-info-section";
-import ActivitySnapshot from "./sections/activity-snapshot";
-import MyReviewsSection from "./sections/my-reviews-section";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import AvatarSection from "./components/avatar-section";
+import PersonalInfoSection from "./components/personal-info-section";
+import ActivitySnapshot from "./components/activity-snapshot";
+import MyReviewsSection from "./components/my-reviews-section";
 import { useAuth } from "@/context/AuthContext";
 
 type ProfileTab = "info" | "activity" | "reviews";
@@ -15,9 +16,34 @@ const TABS: { id: ProfileTab; label: string }[] = [
 	{ id: "reviews", label: "My Reviews" },
 ];
 
+const VALID_TABS = TABS.map(t => t.id);
+
 export default function ProfileClient() {
 	const { user, isLoading } = useAuth();
-	const [activeTab, setActiveTab] = useState<ProfileTab>("info");
+	const router = useRouter();
+	const searchParams = useSearchParams();
+
+	const tabParam = searchParams.get("tab");
+	const initialTab: ProfileTab = VALID_TABS.includes(tabParam as ProfileTab)
+		? (tabParam as ProfileTab)
+		: "info";
+
+	const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab);
+
+	// Keep the tab in sync if the URL changes externally (e.g. navbar link
+	// to /profile?tab=reviews while already on the profile page).
+	useEffect(() => {
+		if (VALID_TABS.includes(tabParam as ProfileTab)) {
+			setActiveTab(tabParam as ProfileTab);
+		}
+	}, [tabParam]);
+
+	const handleTabChange = (tab: ProfileTab) => {
+		setActiveTab(tab);
+		const params = new URLSearchParams(searchParams.toString());
+		params.set("tab", tab);
+		router.replace(`/profile?${params.toString()}`, { scroll: false });
+	};
 
 	if (isLoading) return <ProfileSkeleton />;
 	if (!user) return null;
@@ -47,7 +73,7 @@ export default function ProfileClient() {
 							return (
 								<button
 									key={id}
-									onClick={() => setActiveTab(id)}
+									onClick={() => handleTabChange(id)}
 									className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
 										isActive
 											? "bg-[#c8a96e] text-[#0d0d0d] border-[#c8a96e] shadow-md"

@@ -22,6 +22,7 @@ import { MobileMenu } from "./mobile-menu";
 import { useAuth } from "@/context/AuthContext";
 import { isAdmin } from "@/types/roles";
 import { cn } from "@/lib/utils";
+import { useNotifications } from "@/features/user/notifications/hooks/useNotifications";
 
 const NAV_LINKS = [
 	{ label: "Home", href: "/" },
@@ -35,6 +36,7 @@ export default function Navbar() {
 	const pathname = usePathname();
 	const router = useRouter();
 	const { user, logout } = useAuth();
+	const { unreadCount } = useNotifications();
 
 	const [scrolled, setScrolled] = useState(false);
 	const [mobileOpen, setMobileOpen] = useState(false);
@@ -153,6 +155,7 @@ export default function Navbar() {
 											<NavIconBtn
 												icon={<Bell className="w-4 h-4" />}
 												label="Notifications"
+												badge={unreadCount}
 												onClick={() => setNotifOpen(v => !v)}
 											/>
 											{notifOpen && (

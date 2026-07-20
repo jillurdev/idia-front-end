@@ -1,48 +1,14 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
 import { Star, Trash2, Loader2 } from "lucide-react";
-
-interface Review {
-	id: string;
-	rating: number;
-	comment: string | null;
-	isApproved: boolean;
-	createdAt: string;
-	product: {
-		id: string;
-		title: string;
-		slug: string;
-		thumbnailUrl: string;
-	};
-}
+import { useMyReviews } from "@/features/user/reviews/hooks/useMyReviews";
+import { useDeleteReview } from "@/features/user/reviews/hooks/useDeleteReview";
 
 export default function MyReviewsSection() {
-	const [reviews, setReviews] = useState<Review[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [deletingId, setDeletingId] = useState<string | null>(null);
-	const [isPending, startTransition] = useTransition();
+	const { data: reviews = [], isLoading } = useMyReviews();
+	const { deleteReview, deletingId } = useDeleteReview();
 
-	useEffect(() => {
-		fetch("/api/user/reviews")
-			.then(r => r.json())
-			.then(data => {
-				setReviews(data.reviews ?? []);
-				setLoading(false);
-			})
-			.catch(() => setLoading(false));
-	}, []);
-
-	function handleDelete(id: string) {
-		setDeletingId(id);
-		startTransition(async () => {
-			await fetch(`/api/user/reviews/${id}`, { method: "DELETE" });
-			setReviews(prev => prev.filter(r => r.id !== id));
-			setDeletingId(null);
-		});
-	}
-
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className="space-y-3">
 				{Array(2)
@@ -50,7 +16,7 @@ export default function MyReviewsSection() {
 					.map((_, i) => (
 						<div
 							key={i}
-							className="h-24 rounded-xl bg-[#f5f0e8] animate-pulse"
+							className="h-24 rounded-xl bg-surface-subtle animate-pulse"
 						/>
 					))}
 			</div>
@@ -60,8 +26,8 @@ export default function MyReviewsSection() {
 	if (reviews.length === 0) {
 		return (
 			<div className="text-center py-10 space-y-2">
-				<Star className="w-8 h-8 text-[#e4d8c4] mx-auto" strokeWidth={1.5} />
-				<p className="text-sm text-[#9c8e7e]">
+				<Star className="w-8 h-8 text-border mx-auto" strokeWidth={1.5} />
+				<p className="text-sm text-text-muted">
 					You haven't reviewed anything yet.
 				</p>
 			</div>
@@ -70,12 +36,12 @@ export default function MyReviewsSection() {
 
 	return (
 		<div className="space-y-5">
-			<h2 className="text-[15px] font-semibold text-[#0d0d0d]">My reviews</h2>
+			<h2 className="text-[15px] font-semibold text-brand-navy">My reviews</h2>
 			<div className="space-y-3">
 				{reviews.map(review => (
 					<div
 						key={review.id}
-						className="flex gap-3 p-4 rounded-xl border border-[#eadfce] bg-[#faf7f2]">
+						className="flex gap-3 p-4 rounded-xl border border-border bg-surface-subtle/40">
 						{/* Thumbnail */}
 						<a href={`/products/${review.product.slug}`} className="shrink-0">
 							<img
@@ -91,7 +57,7 @@ export default function MyReviewsSection() {
 								<div>
 									<a
 										href={`/products/${review.product.slug}`}
-										className="text-sm font-medium text-[#0d0d0d] hover:text-[#c8a96e] transition-colors line-clamp-1">
+										className="text-sm font-medium text-brand-navy hover:text-brand-purple-dark transition-colors line-clamp-1">
 										{review.product.title}
 									</a>
 									<div className="flex items-center gap-1 mt-0.5">
@@ -101,8 +67,16 @@ export default function MyReviewsSection() {
 												<Star
 													key={i}
 													className="w-3 h-3"
-													fill={i < review.rating ? "#c8a96e" : "none"}
-													stroke={i < review.rating ? "#c8a96e" : "#d1c4b0"}
+													fill={
+														i < review.rating
+															? "var(--color-brand-purple)"
+															: "none"
+													}
+													stroke={
+														i < review.rating
+															? "var(--color-brand-purple)"
+															: "var(--color-border)"
+													}
 												/>
 											))}
 									</div>
@@ -112,15 +86,15 @@ export default function MyReviewsSection() {
 										className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
 											review.isApproved
 												? "bg-emerald-100 text-emerald-700"
-												: "bg-[#f5f0e8] text-[#9c8e7e]"
+												: "bg-surface-subtle text-text-muted"
 										}`}>
 										{review.isApproved ? "Approved" : "Pending"}
 									</span>
 									<button
-										onClick={() => handleDelete(review.id)}
-										disabled={isPending && deletingId === review.id}
-										className="w-7 h-7 rounded-lg flex items-center justify-center text-[#c0a08e] hover:bg-red-50 hover:text-red-500 transition-colors">
-										{isPending && deletingId === review.id ? (
+										onClick={() => deleteReview(review.id)}
+										disabled={deletingId === review.id}
+										className="w-7 h-7 rounded-lg flex items-center justify-center text-text-muted hover:bg-red-50 hover:text-red-500 transition-colors disabled:opacity-50">
+										{deletingId === review.id ? (
 											<Loader2 className="w-3.5 h-3.5 animate-spin" />
 										) : (
 											<Trash2 className="w-3.5 h-3.5" />
@@ -129,11 +103,11 @@ export default function MyReviewsSection() {
 								</div>
 							</div>
 							{review.comment && (
-								<p className="text-[12px] text-[#5c5244] line-clamp-2">
+								<p className="text-[12px] text-text-secondary line-clamp-2">
 									{review.comment}
 								</p>
 							)}
-							<p className="text-[11px] text-[#9c8e7e]">
+							<p className="text-[11px] text-text-muted">
 								{new Date(review.createdAt).toLocaleDateString("en-US", {
 									year: "numeric",
 									month: "short",
