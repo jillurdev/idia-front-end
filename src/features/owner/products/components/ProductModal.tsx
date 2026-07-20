@@ -15,12 +15,12 @@ interface ProductModalProps {
 }
 
 export function ProductModal({ open, editTarget, onClose }: ProductModalProps) {
-	const { mutate: create, isPending: isCreating } = useCreateProduct();
-	const { mutate: update, isPending: isUpdating } = useUpdateProduct();
+	const { mutateAsync: create, isPending: isCreating } = useCreateProduct();
+	const { mutateAsync: update, isPending: isUpdating } = useUpdateProduct();
 	const { data: categories = [] } = useCategories();
 	const { data: tags = [] } = useTags();
 
-	const handleSubmit = (data: ProductFormValues) => {
+	const handleSubmit = async (data: ProductFormValues) => {
 		// Empty previewVideoUrl → undefined
 		const payload = {
 			...data,
@@ -28,10 +28,9 @@ export function ProductModal({ open, editTarget, onClose }: ProductModalProps) {
 		};
 
 		if (editTarget) {
-			update({ id: editTarget.id, payload }, { onSuccess: onClose });
-		} else {
-			create(payload, { onSuccess: onClose });
+			return update({ id: editTarget.id, payload });
 		}
+		return create(payload);
 	};
 
 	return (
@@ -50,6 +49,7 @@ export function ProductModal({ open, editTarget, onClose }: ProductModalProps) {
 				categories={categories}
 				tags={tags}
 				onSubmit={handleSubmit}
+				onComplete={onClose}
 				isPending={isCreating || isUpdating}
 				onCancel={onClose}
 			/>

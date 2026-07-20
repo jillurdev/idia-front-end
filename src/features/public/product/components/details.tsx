@@ -32,7 +32,7 @@ export default function ProductDetailPage() {
 		);
 	}
 
-	const galleryImages = product.images.filter(img => !img.isCover);
+	const galleryImages = product.images;
 	const isSaved =
 		savedItems?.some(item => item.product.id === product.id) ?? false;
 

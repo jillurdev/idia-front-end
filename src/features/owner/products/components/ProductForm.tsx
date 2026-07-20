@@ -1,20 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+ 
+import { uploadApi } from "@/features/owner/uploads/api";
+import { productApi } from "../api";
 import { productSchema, ProductFormValues } from "../schema";
 import type { Product } from "../types";
 import type { Category } from "../../categories/types";
 import type { Tag } from "../../tags/types";
+import { GalleryImageItem, MultiImageUploadField } from "@/components/ui/Multiimageuploadfield";
+import { FileUploadField } from "@/components/ui/Fileuploadfield";
+import { ImageUploadField } from "@/components/ui/Imageuploadfield";
 
 interface ProductFormProps {
 	defaultValues?: Partial<Product>;
 	categories: Category[];
 	tags: Tag[];
-	onSubmit: (data: ProductFormValues) => void;
+	// Must resolve with the created/updated product — the gallery images
+	// below need its id before they can be uploaded and attached.
+	onSubmit: (data: ProductFormValues) => Promise<{ id: string }>;
+	// Called once the product AND all gallery image changes have finished —
+	// this is the right moment to close the modal.
+	onComplete?: () => void;
 	isPending: boolean;
 	onCancel: () => void;
 }
@@ -24,6 +36,7 @@ export function ProductForm({
 	categories,
 	tags,
 	onSubmit,
+	onComplete,
 	isPending,
 	onCancel,
 }: ProductFormProps) {
@@ -76,8 +89,76 @@ export function ProductForm({
 		setValue("tagIds", updated);
 	};
 
+	// Files selected via the "Upload" tabs but not yet sent anywhere — these
+	// are only uploaded to Cloudinary when the form is actually submitted.
+	const [pendingThumbnail, setPendingThumbnail] = useState<File | null>(null);
+	const [pendingProductFile, setPendingProductFile] = useState<File | null>(
+		null,
+	);
+	const [pendingVideo, setPendingVideo] = useState<File | null>(null);
+	const [isUploadingAssets, setIsUploadingAssets] = useState(false);
+
+	// Gallery — existing images (edit mode) plus any newly added ones.
+	// Items already saved carry an `id`; new ones don't until submit.
+	const [galleryImages, setGalleryImages] = useState<GalleryImageItem[]>(
+		() =>
+			defaultValues?.images?.map(img => ({ url: img.url, id: img.id })) ?? [],
+	);
+
+	const handleFormSubmit = handleSubmit(async data => {
+		setIsUploadingAssets(true);
+		try {
+			const finalData = { ...data };
+
+			if (pendingThumbnail) {
+				const res = await uploadApi.image(pendingThumbnail);
+				finalData.thumbnailUrl = res.data.url;
+			}
+			if (pendingProductFile) {
+				const res = await uploadApi.file(pendingProductFile);
+				finalData.fileUrl = res.data.url;
+			}
+			if (pendingVideo) {
+				const res = await uploadApi.video(pendingVideo);
+				finalData.previewVideoUrl = res.data.url;
+			}
+
+			// Create or update the product first — gallery images need its id.
+			const product = await onSubmit(finalData);
+
+			// Removed: existing saved images no longer in the current list.
+			const existingIds = defaultValues?.images?.map(img => img.id) ?? [];
+			const keptIds = new Set(
+				galleryImages.filter(img => img.id).map(img => img.id),
+			);
+			const removedIds = existingIds.filter(id => !keptIds.has(id));
+			for (const imageId of removedIds) {
+				await productApi.removeImage(product.id, imageId);
+			}
+
+			// Added: anything without an `id` yet is new — upload the file if
+			// present, then attach it to the product.
+			const newImages = galleryImages.filter(img => !img.id);
+			for (let i = 0; i < newImages.length; i++) {
+				const img = newImages[i];
+				const url = img.file
+					? (await uploadApi.image(img.file)).data.url
+					: img.url;
+				await productApi.addImage(product.id, { url, order: i });
+			}
+
+			onComplete?.();
+		} catch (err) {
+			toast.error(
+				err instanceof Error ? err.message : "Failed to save product assets",
+			);
+		} finally {
+			setIsUploadingAssets(false);
+		}
+	});
+
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+		<form onSubmit={handleFormSubmit} className="space-y-5">
 			{/* Title */}
 			<Input
 				label="Title"
@@ -144,27 +225,58 @@ export function ProductForm({
 			</div>
 
 			{/* File URL + Thumbnail URL */}
-			<Input
-				label="File URL"
-				placeholder="https://storage.example.com/file.zip"
-				hint="Direct download link for the product file"
-				error={errors.fileUrl?.message}
-				{...register("fileUrl")}
+			<Controller
+				name="fileUrl"
+				control={control}
+				render={({ field }) => (
+					<FileUploadField
+						label="Product File"
+						kind="file"
+						accept=".zip,.rar,.7z,.psd,.ai,.eps,.mp4,.mov"
+						hint="The actual downloadable file buyers receive after purchase"
+						value={field.value}
+						onChange={field.onChange}
+						onFileSelected={setPendingProductFile}
+						error={errors.fileUrl?.message}
+					/>
+				)}
 			/>
 
-			<Input
-				label="Thumbnail URL"
-				placeholder="https://cdn.example.com/thumbnail.jpg"
-				error={errors.thumbnailUrl?.message}
-				{...register("thumbnailUrl")}
+			<Controller
+				name="thumbnailUrl"
+				control={control}
+				render={({ field }) => (
+					<ImageUploadField
+						label="Thumbnail"
+						value={field.value}
+						onChange={field.onChange}
+						onFileSelected={setPendingThumbnail}
+						error={errors.thumbnailUrl?.message}
+					/>
+				)}
 			/>
 
-			<Input
-				label="Preview Video URL"
-				placeholder="https://youtube.com/watch?v=..."
-				showRequired={false}
-				error={errors.previewVideoUrl?.message}
-				{...register("previewVideoUrl")}
+			<MultiImageUploadField
+				label="Gallery Images"
+				value={galleryImages}
+				onChange={setGalleryImages}
+			/>
+
+			<Controller
+				name="previewVideoUrl"
+				control={control}
+				render={({ field }) => (
+					<FileUploadField
+						label="Preview Video"
+						kind="video"
+						accept="video/*"
+						hint="Optional — a short preview clip shown on the product page"
+						value={field.value ?? ""}
+						onChange={field.onChange}
+						onFileSelected={setPendingVideo}
+						error={errors.previewVideoUrl?.message}
+					/>
+				)}
 			/>
 
 			{/* Tags */}
@@ -245,8 +357,14 @@ export function ProductForm({
 				</Button>
 				<Button
 					type="submit"
-					loading={isPending}
-					loadingText={defaultValues?.id ? "Updating…" : "Creating…"}>
+					loading={isPending || isUploadingAssets}
+					loadingText={
+						isUploadingAssets
+							? "Uploading files…"
+							: defaultValues?.id
+								? "Updating…"
+								: "Creating…"
+					}>
 					{defaultValues?.id ? "Update Product" : "Create Product"}
 				</Button>
 			</div>

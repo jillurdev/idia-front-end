@@ -7,7 +7,6 @@ export interface ProductImage {
 	url: string;
 	altText: string | null;
 	order: number;
-	isCover: boolean;
 	createdAt: string;
 }
 
@@ -52,5 +51,4 @@ export interface AddImagePayload {
 	url: string;
 	altText?: string;
 	order?: number;
-	isCover?: boolean;
 }

@@ -3,7 +3,6 @@ export interface ProductImage {
 	url: string;
 	altText: string | null;
 	order: number;
-	isCover: boolean;
 }
 
 export interface Tag {
