@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import type { UserResponse } from "@/types/user";
 import { AppRole } from "@/types/roles";
 
-const API_BASE_URL = "http://localhost:5050/api/v1";
+const API_BASE_URL = "https://api.idiadesigns.com/api/v1";
 
 export async function getCurrentUser(): Promise<UserResponse> {
 	const cookieStore = await cookies();
