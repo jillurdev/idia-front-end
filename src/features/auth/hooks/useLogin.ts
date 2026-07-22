@@ -16,9 +16,15 @@ export function useLogin() {
 	return useMutation({
 		mutationFn: authApi.login,
 		onSuccess: data => {
+			console.log("Login success", data);
+
 			toast.success(`Welcome back, ${data.user.name}!`);
+
 			const redirect = ROLE_REDIRECT[data.user.role] ?? "/dashboard";
-			setTimeout(() => router.push(redirect), 1000);
+
+			console.log("Redirecting to:", redirect);
+
+			router.push(redirect);
 		},
 		onError: error => {
 			if (error instanceof ApiError) {
