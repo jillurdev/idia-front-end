@@ -1,5 +1,5 @@
 const BASE_URL =
-	process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api/v1";
+	process.env.NEXT_PUBLIC_API_URL || "https://api.idiadesigns.com/api/v1";
 
 export class ApiError extends Error {
 	constructor(
