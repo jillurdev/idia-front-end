@@ -7,6 +7,7 @@ import { useCheckout } from "@/features/user/purchases/hooks/useCheckout";
 import { useMySaved } from "@/features/user/saved/hooks/useMySaved";
 import { useToggleSaved } from "@/features/user/saved/hooks/useToggleSaved";
 import { useAuth } from "@/context/AuthContext";
+import ProductReviewsSection from "@/features/user/reviews/components/product-reviews-section";
 
 export default function ProductDetailPage() {
 	const params = useParams<{ id: string }>();
@@ -88,7 +89,8 @@ export default function ProductDetailPage() {
 							)}
 						</div>
 
-						{/* Reviews — TODO: backend does not include reviews on this endpoint yet */}
+						{/* Reviews */}
+						<ProductReviewsSection productId={product.id} />
 					</div>
 
 					{/* Buy box */}

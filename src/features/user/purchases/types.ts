@@ -4,7 +4,7 @@ export type PaymentGateway = "LEMONSQUEEZY" | "SSLCOMMERZ";
 export interface Purchase {
 	id: string;
 	pricePaid: number;
-	currency: "USD" | "BDT";
+	currency: "USD";
 	gateway: PaymentGateway;
 	status: PurchaseStatus;
 	purchasedAt: string;
@@ -13,6 +13,9 @@ export interface Purchase {
 		title: string;
 		slug: string;
 		thumbnailUrl: string;
+	};
+	_count: {
+		downloads: number;
 	};
 }
 

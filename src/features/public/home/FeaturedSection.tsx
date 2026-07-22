@@ -1,17 +1,17 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import SectionHeader from "./SectionHeader";
+"use client";
 
-const CATEGORIES = [
-	{ name: "Intro & Outro", slug: "intro-outro", icon: "🎬", count: 18 },
-	{ name: "Lower Thirds", slug: "lower-thirds", icon: "🏷️", count: 12 },
-	{ name: "Transitions", slug: "transitions", icon: "🔀", count: 24 },
-	{ name: "Logo Reveals", slug: "logo-reveals", icon: "✨", count: 9 },
-	{ name: "Titles & Text", slug: "titles-text", icon: "🔤", count: 15 },
-	{ name: "Social Packs", slug: "social-media-packs", icon: "📱", count: 21 },
-];
+import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
+import SectionHeader from "./SectionHeader";
+import { useCategories } from "@/features/public/categories/hooks/useCategories";
 
 export default function CategoriesSection() {
+	const { data: categories = [], isLoading } = useCategories();
+
+	// Nothing to show and nothing loading — quietly skip the section
+	// rather than render an empty grid on a brand-new store.
+	if (!isLoading && categories.length === 0) return null;
+
 	return (
 		<section className="py-24 bg-brand-white">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,24 +22,32 @@ export default function CategoriesSection() {
 				/>
 
 				<div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-					{CATEGORIES.map(({ name, slug, icon, count }) => (
-						<Link
-							key={slug}
-							href={`/products?category=${slug}`}
-							className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-border hover:border-brand-purple/40 hover:shadow-[0_4px_20px_rgba(168,85,247,0.12)] transition-all duration-300 bg-brand-white hover:bg-brand-purple/3">
-							<span className="text-3xl transition-transform duration-300 group-hover:scale-110">
-								{icon}
-							</span>
-							<div className="text-center">
-								<p className="text-[13px] font-medium text-brand-navy group-hover:text-brand-purple-dark transition-colors">
-									{name}
-								</p>
-								<p className="text-[10px] text-text-secondary/40 mt-0.5">
-									{count} assets
-								</p>
-							</div>
-						</Link>
-					))}
+					{isLoading
+						? Array.from({ length: 6 }).map((_, i) => (
+								<div
+									key={i}
+									className="h-[104px] rounded-xl border border-border bg-surface-subtle animate-pulse"
+								/>
+							))
+						: categories.map(cat => (
+								<Link
+									key={cat.id}
+									href={`/products?category=${cat.slug}`}
+									className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-border hover:border-brand-purple/40 hover:shadow-[0_4px_20px_rgba(168,85,247,0.12)] transition-all duration-300 bg-brand-white hover:bg-brand-purple/3">
+									{cat.icon ? (
+										<span className="text-3xl transition-transform duration-300 group-hover:scale-110">
+											{cat.icon}
+										</span>
+									) : (
+										<Sparkles className="w-7 h-7 text-brand-purple/50 transition-transform duration-300 group-hover:scale-110" />
+									)}
+									<div className="text-center">
+										<p className="text-[13px] font-medium text-brand-navy group-hover:text-brand-purple-dark transition-colors">
+											{cat.name}
+										</p>
+									</div>
+								</Link>
+							))}
 				</div>
 
 				<div className="mt-10 text-center">

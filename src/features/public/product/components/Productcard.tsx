@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { Play, Star, Users } from "lucide-react";
 import type { Product } from "../types";
@@ -6,21 +9,60 @@ export function ProductCard({ product }: { product: Product }) {
 	const reviewCount = product._count?.reviews ?? 0;
 	const purchaseCount = product._count?.purchases ?? 0;
 
+	const videoRef = useRef<HTMLVideoElement>(null);
+	const [isHovering, setIsHovering] = useState(false);
+
+	const handleMouseEnter = () => {
+		if (!product.previewVideoUrl) return;
+		setIsHovering(true);
+		// Play can reject if the pointer leaves before the video is ready —
+		// that's fine, just ignore it.
+		videoRef.current?.play().catch(() => {});
+	};
+
+	const handleMouseLeave = () => {
+		if (!product.previewVideoUrl) return;
+		setIsHovering(false);
+		const video = videoRef.current;
+		if (video) {
+			video.pause();
+			video.currentTime = 0;
+		}
+	};
+
 	return (
 		<Link
 			href={`/products/${product.slug}`}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 			className="group w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] bg-brand-white rounded-xl overflow-hidden border border-border hover:border-brand-purple/30 hover:shadow-[0_8px_32px_rgba(168,85,247,0.10)] transition-all duration-300">
 			<div className="relative aspect-[4/3] overflow-hidden bg-surface-muted">
 				<img
 					src={product.thumbnailUrl}
 					alt={product.title}
-					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+					className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+						isHovering && product.previewVideoUrl ? "opacity-0" : "opacity-100"
+					}`}
 				/>
 				{product.previewVideoUrl && (
-					<div className="absolute inset-0 flex items-center justify-center bg-brand-navy/0 group-hover:bg-brand-navy/30 transition-all duration-300">
-						<div className="w-10 h-10 rounded-full bg-brand-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300">
-							<Play className="w-4 h-4 text-brand-navy fill-brand-navy ml-0.5" />
-						</div>
+					<video
+						ref={videoRef}
+						src={product.previewVideoUrl}
+						muted
+						loop
+						playsInline
+						preload="none"
+						className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+							isHovering ? "opacity-100" : "opacity-0 pointer-events-none"
+						}`}
+					/>
+				)}
+				{product.previewVideoUrl && (
+					<div
+						className={`absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-white/90 flex items-center justify-center transition-opacity duration-300 ${
+							isHovering ? "opacity-0" : "opacity-100"
+						}`}>
+						<Play className="w-3 h-3 text-brand-navy fill-brand-navy ml-0.5" />
 					</div>
 				)}
 				<div className="absolute top-3 left-3">

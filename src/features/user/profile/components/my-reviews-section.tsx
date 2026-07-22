@@ -2,11 +2,10 @@
 
 import { Star, Trash2, Loader2 } from "lucide-react";
 import { useMyReviews } from "@/features/user/reviews/hooks/useMyReviews";
-import { useDeleteReview } from "@/features/user/reviews/hooks/useDeleteReview";
 
 export default function MyReviewsSection() {
 	const { data: reviews = [], isLoading } = useMyReviews();
-	const { deleteReview, deletingId } = useDeleteReview();
+	// const { deleteReview, deletingId } = useDeleteReview();
 
 	if (isLoading) {
 		return (
@@ -90,7 +89,7 @@ export default function MyReviewsSection() {
 										}`}>
 										{review.isApproved ? "Approved" : "Pending"}
 									</span>
-									<button
+									{/* <button
 										onClick={() => deleteReview(review.id)}
 										disabled={deletingId === review.id}
 										className="w-7 h-7 rounded-lg flex items-center justify-center text-text-muted hover:bg-red-50 hover:text-red-500 transition-colors disabled:opacity-50">
@@ -99,7 +98,7 @@ export default function MyReviewsSection() {
 										) : (
 											<Trash2 className="w-3.5 h-3.5" />
 										)}
-									</button>
+									</button> */}
 								</div>
 							</div>
 							{review.comment && (
