@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCategories } from "@/features/public/categories/hooks/useCategories";
 
-export default function CategoriesPage() {
+export default function CategoriesClient() {
 	const { data: categories, isLoading, isError } = useCategories();
 
 	return (

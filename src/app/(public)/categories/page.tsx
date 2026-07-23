@@ -1,10 +1,10 @@
-import CategoriesPage from "@/features/public/categories/components";
-import React from "react";
+import CategoriesClient from "@/features/public/categories/components";
 
+ 
 const page = () => {
 	return (
 		<div>
-			<CategoriesPage />
+			<CategoriesClient />
 		</div>
 	);
 };

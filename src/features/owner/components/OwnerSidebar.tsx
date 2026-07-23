@@ -14,6 +14,7 @@ import {
 	Mail,
 	Settings,
 	ScrollText,
+	LifeBuoy,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
 	{ label: "Products", href: "/owner/products", icon: Package },
 	{ label: "Purchases", href: "/owner/purchases", icon: ShoppingCart },
 	{ label: "Reviews", href: "/owner/reviews", icon: Star },
+	{ label: "Support", href: "/owner/support", icon: LifeBuoy },
 	{ label: "Users", href: "/owner/users", icon: Users },
 	{ label: "Emails", href: "/owner/emails", icon: Mail },
 	{ label: "Settings", href: "/owner/settings", icon: Settings },

@@ -3,6 +3,7 @@ import {
 	Bookmark,
 	ClipboardList,
 	LayoutDashboard,
+	LifeBuoy,
 	LogOut,
 	Settings,
 	ShoppingBag,
@@ -57,6 +58,11 @@ export function ProfileDropdown({
 			icon: <ClipboardList className="w-3.5 h-3.5" />,
 			label: "My reviews",
 			href: "/profile?tab=reviews",
+		},
+		{
+			icon: <LifeBuoy className="w-3.5 h-3.5" />,
+			label: "Support",
+			href: "/support",
 		},
 		{
 			icon: <Settings className="w-3.5 h-3.5" />,
