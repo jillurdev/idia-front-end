@@ -22,14 +22,9 @@ const STATUS_STYLES: Record<PurchaseStatus, string> = {
 };
 
 export default function PurchasesClient() {
-	const { data: allPurchases = [], isLoading } = useMyPurchases();
-	// PENDING rows exist from the moment checkout starts, before payment —
-	// if the buyer never completes payment, no webhook arrives and it never
-	// resolves. Those (and FAILED ones) aren't real purchases, so we hide
-	// them here rather than show a misleading "pending" order forever.
-	const purchases = allPurchases.filter(
-		p => p.status === "COMPLETED" || p.status === "REFUNDED",
-	);
+	// Backend now only returns COMPLETED/REFUNDED purchases (see
+	// purchase.service.ts findUserPurchases) — no client-side filter needed.
+	const { data: purchases = [], isLoading } = useMyPurchases();
 	const { download, downloadingId } = useDownload();
 	const { buyNow, isPending: isBuyingAgain } = useCheckout();
 

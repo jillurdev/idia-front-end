@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useMyPurchases } from "@/features/user/purchases/hooks/useMyPurchases";
 import { useMySaved } from "@/features/user/saved/hooks/useMySaved";
+import type { PurchaseStatus } from "@/features/user/purchases/types";
 import {
 	ShoppingBag,
 	Heart,
@@ -14,8 +15,17 @@ import {
 } from "lucide-react";
 import { useNotifications } from "../notifications/hooks/useNotifications";
 
+const STATUS_STYLES: Record<PurchaseStatus, string> = {
+	COMPLETED: "bg-emerald-50 text-emerald-700 border-emerald-200",
+	PENDING: "bg-amber-50 text-amber-700 border-amber-200",
+	FAILED: "bg-red-50 text-red-600 border-red-200",
+	REFUNDED: "bg-surface-muted text-text-muted border-border",
+};
+
 export default function CustomerDashboard() {
 	const { user, isLoading: authLoading } = useAuth();
+	// Backend now only returns COMPLETED/REFUNDED purchases (see
+	// purchase.service.ts findUserPurchases) — no client-side filter needed.
 	const { data: purchases = [], isLoading: purchasesLoading } =
 		useMyPurchases();
 	const { data: saved = [], isLoading: savedLoading } = useMySaved();
@@ -115,10 +125,16 @@ export default function CustomerDashboard() {
 										<p className="text-[13px] font-medium text-brand-navy truncate">
 											{p.product.title}
 										</p>
-										<p className="text-[11px] text-text-muted flex items-center gap-1">
-											<Calendar className="w-3 h-3" />
-											{new Date(p.purchasedAt).toLocaleDateString()}
-										</p>
+										<div className="flex items-center gap-2 mt-0.5">
+											<p className="text-[11px] text-text-muted flex items-center gap-1">
+												<Calendar className="w-3 h-3" />
+												{new Date(p.purchasedAt).toLocaleDateString()}
+											</p>
+											<span
+												className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium border ${STATUS_STYLES[p.status]}`}>
+												{p.status}
+											</span>
+										</div>
 									</div>
 									<span className="text-[13px] font-semibold text-brand-navy">
 										{p.currency === "USD" ? "$" : "৳"}
