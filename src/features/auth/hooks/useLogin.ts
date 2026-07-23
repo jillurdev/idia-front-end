@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authApi } from "../api";
@@ -12,17 +12,17 @@ const ROLE_REDIRECT: Record<string, string> = {
 
 export function useLogin() {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: authApi.login,
-		onSuccess: data => {
-			console.log("Login success", data);
+		onSuccess: async data => {
+			queryClient.setQueryData(["auth-user"], data.user);
+			await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
 
 			toast.success(`Welcome back, ${data.user.name}!`);
 
 			const redirect = ROLE_REDIRECT[data.user.role] ?? "/dashboard";
-
-			console.log("Redirecting to:", redirect);
 
 			router.push(redirect);
 		},
